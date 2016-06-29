@@ -10,9 +10,7 @@ import com.jsg.base.model.UserInfo;
 
 
 public class Employee extends BaseModel implements Serializable{
-	/** 
-	* @Fields serialVersionUID : TODO() 
-	*/ 
+	
 	private static final long serialVersionUID = 1L;
 	//员工姓名
 	private String employeeName;

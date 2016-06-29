@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class table="CUSTOMER"  name="com.jsg.employee.model.Customer">
+    <id name="id" column="ID" type="java.lang.String">
+      <generator class="uuid.hex"/>
+    </id>
+  	<property name="employeeName" column="EMPLOYEE_NAME" type="java.lang.String"/>
+  	<property name="employeeCode" column="EMPLOYEE_CODE" type="java.lang.String"/>
+  	<property name="email" column="EMAIL" type="java.lang.String"/>
+  	<property name="probation" column="PROBATION" type="java.math.BigDecimal"/>
+  	<property name="salary" column="SALARY" type="java.math.BigDecimal"/>
+
+  	<property name="entryTime" column="ENTRY_TIME" type="java.lang.String"/>
+  	<property name="quitTime" column="QUIT_TIME" type="java.lang.String"/>
+  	
+  	<property name="createTime" type="timestamp">
+       <column name="CREATE_TIME" length="19" />
+    </property>
+    <property name="updateTime" type="timestamp">
+       <column name="UPDATE_TIME" length="19" />
+    </property>
+    
+    <many-to-one name="department" column="DEPT" class="com.jsg.base.model.BaseDic"/>
+    <many-to-one name="probationState" column="PROBATION_STATE" class="com.jsg.base.model.BaseDic"/>
+    <many-to-one name="isJob" column="IS_JOB" class="com.jsg.base.model.BaseDic"/>
+    <many-to-one name="register" column="REGISTER" class="com.jsg.base.model.BaseDic"/>
+    <many-to-one name="customer" column="CUSTOMER" class="com.jsg.employee.model.Customer"/>
+    <many-to-one name="creator" column="CREATOR" class="com.jsg.base.model.UserInfo"/>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class table="CUSTOMER"  name="com.jsg.employee.model.Customer">
+    <id name="id" column="ID" type="java.lang.String">
+      <generator class="uuid.hex"/>
+    </id>
+  	<property name="name" column="NAME" type="java.lang.String"/>
+  	<property name="code" column="CODE" type="java.lang.String"/>
+  	<property name="overTimeMoney" column="OVERTIME_MONEY" type="java.math.BigDecimal"/>
+  	<property name="workDays" column="WORK_DAYS" type="java.math.BigDecimal"/>
+  	<property name="createTime" type="timestamp">
+       <column name="CREATE_TIME" length="19" />
+    </property>
+    <property name="updateTime" type="timestamp">
+       <column name="UPDATE_TIME" length="19" />
+    </property>
+    
+    <many-to-one name="isMeal" column="IS_MEAL_SUPPLEMENT" class="com.jsg.base.model.BaseDic"/>
+  </class>
+</hibernate-mapping>
