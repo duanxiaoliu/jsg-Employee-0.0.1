@@ -26,4 +26,77 @@ public interface ICustomerService extends IBaseService {
 	* @date 2016-6-29 下午5:21:10
 	 */
 	BasePage queryCustomer(int pageNo,int pageSize,Customer customer);
+	/**
+	 * 
+	* @Title: getCustomerById 
+	* @Description: TODO(通过id查询客户信息) 
+	* @param @param id
+	* @param @return
+	* @return Customer
+	* @throws 
+	* @author duanws
+	* @date 2016-7-1 下午3:04:53
+	 */
+	Customer getCustomerById(String id);
+	/**
+	 * 
+	* @Title: delCustomerById 
+	* @Description: TODO(删除客户信息) 
+	* @param @param id
+	* @return void
+	* @throws 
+	* @author duanws
+	* @date 2016-7-1 下午4:01:24
+	 */
+	void delCustomerById(String id);
+	/**
+	 * 
+	* @Title: saveCustomer 
+	* @Description: TODO(保存客户信息) 
+	* @param @param customer
+	* @return void
+	* @throws 
+	* @author duanws
+	* @date 2016-7-1 下午4:04:00
+	 */
+	void saveCustomer(Customer customer);
+	/**
+	 * 
+	* @Title: updateCustomer 
+	* @Description: TODO(修改客户信息) 
+	* @param @param customer
+	* @return void
+	* @throws 
+	* @author duanws
+	* @date 2016-7-1 下午4:04:55
+	 */
+	void updateCustomer(Customer customer);
+	/**
+	 * 
+	* @Title: isExistCustomerName 
+	* @Description: TODO(根据客户名称验证唯一) 
+	* @param @param id
+	* @param @param name
+	* @param @param code
+	* @param @return
+	* @return boolean
+	* @throws 
+	* @author duanws
+	* @date 2016-7-1 下午4:35:46
+	 */
+	boolean isExistCustomerName(String id, String name, String code);
+	/**
+	 * 
+	* @Title: isExistCustomerCode 
+	* @Description: TODO(根据客户代码验证唯一) 
+	* @param @param id
+	* @param @param name
+	* @param @param code
+	* @param @return
+	* @return boolean
+	* @throws 
+	* @author duanws
+	* @date 2016-7-1 下午4:36:03
+	 */
+	boolean isExistCustomerCode(String id, String name, String code);
 }

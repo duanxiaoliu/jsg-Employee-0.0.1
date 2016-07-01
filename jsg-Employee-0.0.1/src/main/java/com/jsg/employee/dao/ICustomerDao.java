@@ -26,5 +26,17 @@ public interface ICustomerDao extends IBaseDao {
 	* @date 2016-6-29 下午5:16:34
 	 */
 	BasePage queryCustomer(int pageNo,int pageSize,Customer customer);
+	/**
+	 * 
+	* @Title: delCustomer 
+	* @Description: TODO(删除客户信息) 
+	* @param @param id
+	* @return void
+	* @throws 
+	* @author duanws
+	* @date 2016-7-1 下午3:59:54
+	 */
+	void delCustomer(String id);
+
 
 }

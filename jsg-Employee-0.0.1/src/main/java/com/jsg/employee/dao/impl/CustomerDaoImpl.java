@@ -32,4 +32,12 @@ public class CustomerDaoImpl extends BaseDaoImpl implements ICustomerDao {
 		return this.queryPage(hql.toString(), pageNo, pageSize, new Object[0]);
 	}
 
+	@Override
+	public void delCustomer(String id) {
+		String hql = " delete from Customer c where c.id='"+id+"'";
+		this.executeHql(hql, new Object[0]);
+	}
+
+
+
 }

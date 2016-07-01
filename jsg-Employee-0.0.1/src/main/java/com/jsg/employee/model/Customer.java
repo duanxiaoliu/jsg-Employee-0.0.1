@@ -18,7 +18,7 @@ public class Customer extends BaseModel implements Serializable {
 	private String code;
 	//加班费
 	private BigDecimal overTimeMoney;
-	//是否有餐补
+	//是否有补助
 	private BaseDic isMeal;
 	//月平均工作日天数
 	private BigDecimal workDays;
