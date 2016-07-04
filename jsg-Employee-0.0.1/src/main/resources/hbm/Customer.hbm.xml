@@ -8,8 +8,8 @@
     </id>
   	<property name="name" column="NAME" type="java.lang.String"/>
   	<property name="code" column="CODE" type="java.lang.String"/>
-  	<property name="overTimeMoney" column="OVERTIME_MONEY" type="java.math.BigDecimal"/>
-  	<property name="workDays" column="WORK_DAYS" type="java.math.BigDecimal"/>
+  	<property name="overTimeMoney" column="OVERTIME_MONEY"/>
+  	<property name="workDays" column="WORK_DAYS"/>
   	<property name="comments" column="COMMENTS" type="java.lang.String"/>
   	<property name="createTime" type="timestamp">
        <column name="CREATE_TIME" length="19" />

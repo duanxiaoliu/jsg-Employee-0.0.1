@@ -3,12 +3,16 @@ package com.jsg.employee.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jsg.base.controller.BaseController;
 import com.jsg.base.model.BaseDic;
@@ -76,7 +80,7 @@ public class CustomerController extends BaseController {
 	* @author duanws
 	* @date 2016-7-1 下午3:07:42
 	 */
-	@RequestMapping({"employeeManage/customerManage/ope-add/editCustomer","employeeManage/customerManage/ope-update/editCustomer"})
+	@RequestMapping({"employeeManage/customerManage/ope-add/addCustomer","employeeManage/customerManage/ope-update/editCustomer"})
 	public String editCustomer(HttpServletRequest request,ModelMap model,Customer customer){
 		String id = request.getParameter("id");
 		if(DataUtil.strIsNotNull(id)){
@@ -88,8 +92,113 @@ public class CustomerController extends BaseController {
 		this.setData(customer, model);
 		return "employee/customer/editCustomer";
 	}
-	
-	
+	/**
+	 * 
+	* @Title: saveCustomer 
+	* @Description: TODO(保存，修改客户信息) 
+	* @param @param request
+	* @param @param model
+	* @param @param customer
+	* @param @return
+	* @return String
+	* @throws 
+	* @author duanws
+	* @date 2016-7-4 下午1:55:44
+	 */
+	@RequestMapping({"employeeManage/customerManage/ope-add/saveCustomer"})
+	public String saveCustomer(HttpServletRequest request,ModelMap model,Customer customer){
+		String id = customer.getId();
+		//修改
+		if(DataUtil.strIsNotNull(id)){
+			this.customerService.updateCustomer(customer);
+		}else{
+			this.customerService.saveCustomer(customer);
+		}
+		return "redirect:/employeeManage/customerManage/ope-query/queryCustomer.do";
+	}
+	/**
+	 * 
+	* @Title: delCustomer 
+	* @Description: TODO(删除用户信息) 
+	* @param @param request
+	* @param @param id
+	* @param @return
+	* @return String
+	* @throws 
+	* @author duanws
+	* @date 2016-7-4 下午2:01:42
+	 */
+	@RequestMapping(value={"employeeManage/customerManage/ope-del/delCustomer/{id}"},produces={"text/plain;;charset=UTF-8"},method=RequestMethod.DELETE)
+	public @ResponseBody String delCustomer(HttpServletRequest request,@PathVariable("id") String id){
+		try{
+			this.customerService.delCustomerById(id);
+		}catch(Exception e){
+			return "error";
+		}
+		return "success";
+	}
+	/**
+	 * 
+	* @Title: viewCustomer 
+	* @Description: TODO(查看用户信息) 
+	* @param @param request
+	* @param @return
+	* @return String
+	* @throws 
+	* @author duanws
+	* @date 2016-7-4 下午2:04:05
+	 */
+	@RequestMapping({"employeeManage/customerManage/ope-view/viewCustomer"})
+	public String viewCustomer(HttpServletRequest request,ModelMap model){
+		String id = request.getParameter("id");
+		Customer customer = this.customerService.getCustomerById(id);
+		this.setData(customer, model);
+		return "employee/customer/viewCustomer";
+	}
+	/**
+	 * 
+	* @Title: isExistCustomerName 
+	* @Description: TODO(通过名称验证客户信息是否存在) 
+	* @param @param request
+	* @param @param model
+	* @param @return
+	* @return String
+	* @throws 
+	* @author duanws
+	* @date 2016-7-4 下午1:47:57
+	 */
+	@RequestMapping(value={"employeeManage/customerManage/ope-query/isExistCustomerName"},produces={"text/plain;charset=UTF-8"})
+	public @ResponseBody String isExistCustomerName(HttpServletRequest request,ModelMap model){
+		String id = request.getParameter("id");
+		String name = request.getParameter("name");
+		boolean check = this.customerService.isExistCustomerName(id, name, null);
+		if(check){
+			return "true";
+		}
+		return "false";
+	}
+	/**
+	 * 
+	* @Title: isExistCustomerCode 
+	* @Description: TODO(通过代码验证客户信息是否存在) 
+	* @param @param request
+	* @param @param model
+	* @param @return
+	* @return String
+	* @throws 
+	* @author duanws
+	* @date 2016-7-4 下午1:51:18
+	 */
+	@RequestMapping(value={"employeeManage/customerManage/ope-query/isExistCustomerCode"},produces={"text/plain;charset=UTF-8"})
+	public @ResponseBody String isExistCustomerCode(HttpServletRequest request,ModelMap model){
+		String id = request.getParameter("id");
+		String code = request.getParameter("code");
+		boolean check = this.customerService.isExistCustomerCode(id, null, code);
+		if(check){
+			return "true";
+		}
+		return "false";
+	}
 	
 	/**
 	 * 

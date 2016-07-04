@@ -23,9 +23,9 @@ public class Employee extends BaseModel implements Serializable{
 	//邮箱
 	private String email;
 	//试用期工资
-	private BigDecimal probation;
+	private String probation;
 	//基本工资
-	private BigDecimal salary;
+	private String salary;
 	//试用期是否全薪
 	private BaseDic probationState;
 	//是否在职
@@ -69,16 +69,17 @@ public class Employee extends BaseModel implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public BigDecimal getProbation() {
+
+	public String getProbation() {
 		return probation;
 	}
-	public void setProbation(BigDecimal probation) {
+	public void setProbation(String probation) {
 		this.probation = probation;
 	}
-	public BigDecimal getSalary() {
+	public String getSalary() {
 		return salary;
 	}
-	public void setSalary(BigDecimal salary) {
+	public void setSalary(String salary) {
 		this.salary = salary;
 	}
 	public BaseDic getProbationState() {

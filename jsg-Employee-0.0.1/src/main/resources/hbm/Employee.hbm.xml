@@ -9,8 +9,8 @@
   	<property name="employeeName" column="EMPLOYEE_NAME" type="java.lang.String"/>
   	<property name="employeeCode" column="EMPLOYEE_CODE" type="java.lang.String"/>
   	<property name="email" column="EMAIL" type="java.lang.String"/>
-  	<property name="probation" column="PROBATION" type="java.math.BigDecimal"/>
-  	<property name="salary" column="SALARY" type="java.math.BigDecimal"/>
+  	<property name="probation" column="PROBATION"/>
+  	<property name="salary" column="SALARY" />
 
   	<property name="entryTime" column="ENTRY_TIME" type="java.lang.String"/>
   	<property name="quitTime" column="QUIT_TIME" type="java.lang.String"/>
