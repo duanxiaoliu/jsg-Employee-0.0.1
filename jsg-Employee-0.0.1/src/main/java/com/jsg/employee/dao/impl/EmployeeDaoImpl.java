@@ -30,14 +30,20 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements IEmployeeDao {
 			hql.append(" and e.employeeName like '%"+employee.getEmployeeCode()+"%'");
 		}
 		//所在部门
-		if(DataUtil.objIsNotNull(employee.getDepartment()) && DataUtil.strIsNotNull(employee.getDepartment().getName())){
-			hql.append(" and e.department.name like '%"+employee.getDepartment().getName()+"%'");
+		if(DataUtil.objIsNotNull(employee.getDepartment()) && DataUtil.strIsNotNull(employee.getDepartment().getId())){
+			hql.append(" and e.department.id ='"+employee.getDepartment().getId()+"'");
 		}
 		//所在客户
-		if(DataUtil.objIsNotNull(employee.getCustomer()) && DataUtil.strIsNotNull(employee.getCustomer().getName())){
-			hql.append(" and e.customer.name like '%"+employee.getCustomer().getName()+"%'");
+		if(DataUtil.objIsNotNull(employee.getCustomer()) && DataUtil.strIsNotNull(employee.getCustomer().getId())){
+			hql.append(" and e.customer.id ='"+employee.getCustomer().getId()+"'");
 		}
 		return this.queryPage(hql.toString(), pageNo, pageSize, new Object[0]);
+	}
+
+	@Override
+	public void delEmployeeById(String id) {
+		String hql = " delete from Employee e where e.id='"+id+"'";
+		this.executeHql(hql, new Object[0]);
 	}
 
 }

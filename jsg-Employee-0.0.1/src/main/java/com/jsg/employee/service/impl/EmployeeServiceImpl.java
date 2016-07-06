@@ -27,4 +27,28 @@ public class EmployeeServiceImpl implements IEmployeeService {
 		return this.employeeDao.queryEmployee(pageNo, pageSize, employee);
 	}
 
+	@Override
+	public Employee getEmployeeById(String id) {
+		
+		return (Employee) this.employeeDao.get(Employee.class, id);
+	}
+
+	@Override
+	public void saveEmployee(Employee employee) {
+		this.employeeDao.save(employee);
+		
+	}
+
+	@Override
+	public void updateEmployee(Employee employee) {
+		this.employeeDao.update(employee);
+		
+	}
+
+	@Override
+	public void delEmployeeById(String id) {
+		this.employeeDao.delEmployeeById(id);
+		
+	}
+
 }

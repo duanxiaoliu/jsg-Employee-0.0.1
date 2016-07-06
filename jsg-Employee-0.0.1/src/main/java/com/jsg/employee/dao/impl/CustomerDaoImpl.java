@@ -1,5 +1,7 @@
 package com.jsg.employee.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.jsg.base.dao.impl.BaseDaoImpl;
@@ -36,6 +38,12 @@ public class CustomerDaoImpl extends BaseDaoImpl implements ICustomerDao {
 	public void delCustomer(String id) {
 		String hql = " delete from Customer c where c.id='"+id+"'";
 		this.executeHql(hql, new Object[0]);
+	}
+
+	@Override
+	public List<Customer> getCustomerList() {
+		String hql = " from Customer";
+		return this.queryList(hql, new Object[0]);
 	}
 
 

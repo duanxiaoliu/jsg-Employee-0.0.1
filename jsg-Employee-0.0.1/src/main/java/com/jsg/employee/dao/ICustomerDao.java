@@ -1,5 +1,7 @@
 package com.jsg.employee.dao;
 
+import java.util.List;
+
 import com.jsg.base.dao.IBaseDao;
 import com.jsg.base.model.BasePage;
 import com.jsg.employee.model.Customer;
@@ -37,6 +39,17 @@ public interface ICustomerDao extends IBaseDao {
 	* @date 2016-7-1 下午3:59:54
 	 */
 	void delCustomer(String id);
+	/**
+	 * 
+	* @Title: getCustomerList 
+	* @Description: TODO(查询客户列表) 
+	* @param @return
+	* @return List<Customer>
+	* @throws 
+	* @author duanws
+	* @date 2016-7-6 下午2:06:56
+	 */
+	List<Customer> getCustomerList();
 
 
 }

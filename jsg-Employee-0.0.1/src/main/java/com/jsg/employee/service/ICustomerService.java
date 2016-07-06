@@ -1,5 +1,7 @@
 package com.jsg.employee.service;
 
+import java.util.List;
+
 import com.jsg.base.model.BasePage;
 import com.jsg.base.service.IBaseService;
 import com.jsg.employee.model.Customer;
@@ -99,4 +101,15 @@ public interface ICustomerService extends IBaseService {
 	* @date 2016-7-1 下午4:36:03
 	 */
 	boolean isExistCustomerCode(String id, String name, String code);
+	/**
+	 * 
+	* @Title: getCustomerList 
+	* @Description: TODO(查询客户列表) 
+	* @param @return
+	* @return List<Customer>
+	* @throws 
+	* @author duanws
+	* @date 2016-7-6 下午2:06:56
+	 */
+	List<Customer> getCustomerList();
 }

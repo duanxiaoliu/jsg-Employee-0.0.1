@@ -87,5 +87,9 @@ public class CustomerServiceImpl implements ICustomerService {
 		}
 		return true;
 	}
+	@Override
+	public List<Customer> getCustomerList() {
+		return this.customerDao.getCustomerList();
+	}
 	
 }

@@ -26,4 +26,15 @@ public interface IEmployeeDao extends IBaseDao {
 	* @date 2016-7-5 下午2:40:25
 	 */
 	BasePage queryEmployee(int pageNo,int pageSize,Employee employee);
+	/**
+	 * 
+	* @Title: delEmployeeById 
+	* @Description: TODO(通过id删除员工信息) 
+	* @param @param id
+	* @return void
+	* @throws 
+	* @author duanws
+	* @date 2016-7-6 下午3:28:41
+	 */
+	void delEmployeeById(String id);
 }

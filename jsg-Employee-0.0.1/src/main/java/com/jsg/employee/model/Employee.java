@@ -31,9 +31,9 @@ public class Employee extends BaseModel implements Serializable{
 	//是否在职
 	private BaseDic isJob;
 	//入职时间
-	private Date entryTime;
+	private String entryTime;
 	//离职时间
-	private Date quitTime;
+	private String quitTime;
 	//户口性质
 	private BaseDic register;
 	//创建人
@@ -94,16 +94,17 @@ public class Employee extends BaseModel implements Serializable{
 	public void setIsJob(BaseDic isJob) {
 		this.isJob = isJob;
 	}
-	public Date getEntryTime() {
+
+	public String getEntryTime() {
 		return entryTime;
 	}
-	public void setEntryTime(Date entryTime) {
+	public void setEntryTime(String entryTime) {
 		this.entryTime = entryTime;
 	}
-	public Date getQuitTime() {
+	public String getQuitTime() {
 		return quitTime;
 	}
-	public void setQuitTime(Date quitTime) {
+	public void setQuitTime(String quitTime) {
 		this.quitTime = quitTime;
 	}
 	public BaseDic getRegister() {
