@@ -1,9 +1,12 @@
 package com.jsg.employee.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jsg.base.model.BasePage;
+import com.jsg.base.model.UserInfo;
 import com.jsg.employee.dao.IEmployeeDao;
 import com.jsg.employee.model.Employee;
 import com.jsg.employee.service.IEmployeeService;
@@ -49,6 +52,22 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	public void delEmployeeById(String id) {
 		this.employeeDao.delEmployeeById(id);
 		
+	}
+
+	@Override
+	public boolean isExistEmployeeCode(String id, String employeeCode) {
+		String hql = " from Employee e where e.employeeCode='"+employeeCode+"'";
+		List<Employee> list = this.employeeDao.queryList(hql, new Object[0]);
+		if((list != null) && (list.size()>0)){
+			if(list.size()==1){
+				if(!list.get(0).getId().equals(id)){
+					return false;
+				}
+			}else if(list.size() > 1){
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

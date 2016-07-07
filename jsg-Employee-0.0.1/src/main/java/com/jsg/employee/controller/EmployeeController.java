@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jsg.base.controller.BaseController;
 import com.jsg.base.model.BaseDic;
@@ -94,6 +95,94 @@ public class EmployeeController extends BaseController {
 		this.setData(model, employee);
 		return "employee/employee/editEmployee";
 	}
+	/**
+	 * 
+	* @Title: isExistEmployeeCode 
+	* @Description: TODO(通过员工编号进行唯一验证) 
+	* @param @param request
+	* @param @return
+	* @return String
+	* @throws 
+	* @author duanws
+	* @date 2016-7-7 下午2:34:21
+	 */
+	@RequestMapping(value={"employeeManage/employeeManage/ope-query/isExistEmployeeCode"},produces={"text/plain;charset=UTF-8"})
+	public @ResponseBody String isExistEmployeeCode(HttpServletRequest request){
+		String id = request.getParameter("id");
+		String code = request.getParameter("code");
+		boolean check = this.employeeService.isExistEmployeeCode(id, code);
+		if(check){
+			return "true";
+		}else{
+			return "false";
+		}
+	}
+	/**
+	 * 
+	* @Title: saveEmployee 
+	* @Description: TODO(保存员工信息) 
+	* @param @param request
+	* @param @param model
+	* @param @param employee
+	* @param @return
+	* @return String
+	* @throws 
+	* @author duanws
+	* @date 2016-7-7 下午2:37:05
+	 */
+	@RequestMapping({"employeeManage/employeeManage/ope-save/saveEmployee"})
+	public String saveEmployee(HttpServletRequest request,ModelMap model,Employee employee){
+		String id = employee.getId();
+		if(DataUtil.strIsNotNull(id)){
+			this.employeeService.updateEmployee(employee);
+		}else{
+			this.employeeService.saveEmployee(employee);
+		}
+		return "redirect:/employeeManage/EmployeeManage/ope-query/queryEmployee.do";
+	}
+	/**
+	 * 
+	* @Title: delEmployee 
+	* @Description: TODO() 
+	* @param @param request
+	* @return void
+	* @throws 
+	* @author duanws
+	* @date 2016-7-7 下午3:48:04
+	 */
+	@RequestMapping(value={"employeeManage/employeeManage/ope-del/delEmployee"},produces={"text/pain;charset=UTF-8"})
+	public @ResponseBody String delEmployee(HttpServletRequest request){
+		String id = request.getParameter("id");
+		if(DataUtil.objIsNotNull(id)){
+			try{
+				this.employeeService.delEmployeeById(id);
+			}catch(Exception e){
+				return "error";
+			}
+		}else{
+			return "error";
+		}
+		return "success";
+	}
+	/**
+	 * 
+	* @Title: viewEmployee 
+	* @Description: TODO(查看员工信息) 
+	* @param @param request
+	* @param @param model
+	* @param @return
+	* @return String
+	* @throws 
+	* @author duanws
+	* @date 2016-7-7 下午3:55:48
+	 */
+	@RequestMapping({"employeeManage/employeeManage/ope-view/viewEmployee"})
+	public String viewEmployee(HttpServletRequest request,ModelMap model){
+		String id = request.getParameter("id");
+		Employee employee = this.employeeService.getEmployeeById(id);
+		this.setData(model, employee);
+		return "employee/employee/viewEmployee";
+	}
 	
 	
 	/**
@@ -116,7 +205,7 @@ public class EmployeeController extends BaseController {
 		model.addAttribute("departmentDicList", departmentDicList);
 		//客户
 		model.addAttribute("customerList", customerList);
-		//客户性质
+		//户口性质
 		model.addAttribute("registerList", registerList);
 		//是否
 		model.addAttribute("YNDicList", YNDicList);

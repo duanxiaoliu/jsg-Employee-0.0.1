@@ -74,6 +74,19 @@ public interface IEmployeeService extends IBaseService {
 	* @date 2016-7-6 下午3:31:04
 	 */
 	void delEmployeeById(String id);
+	/**
+	 * 
+	* @Title: isExistEmployeeCode 
+	* @Description: TODO(通过员工编码验证是否唯一) 
+	* @param @param id
+	* @param @param employeeCode
+	* @param @return
+	* @return boolean
+	* @throws 
+	* @author duanws
+	* @date 2016-7-7 下午2:26:44
+	 */
+	boolean isExistEmployeeCode(String id,String employeeCode);
 	
 
 }
