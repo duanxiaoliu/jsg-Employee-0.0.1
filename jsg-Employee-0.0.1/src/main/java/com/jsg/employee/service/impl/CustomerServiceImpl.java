@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.jsg.base.model.BasePage;
 import com.jsg.employee.dao.ICustomerDao;
+import com.jsg.employee.model.Allowance;
 import com.jsg.employee.model.Customer;
 import com.jsg.employee.service.ICustomerService;
 /**
@@ -90,6 +91,21 @@ public class CustomerServiceImpl implements ICustomerService {
 	@Override
 	public List<Customer> getCustomerList() {
 		return this.customerDao.getCustomerList();
+	}
+	@Override
+	public Allowance getAllowanceByCustomerId(String id) {
+		
+		return this.customerDao.getAllowanceByCustomerId(id);
+	}
+	@Override
+	public void saveAllowance(Allowance allowance) {
+		this.customerDao.save(allowance);
+		
+	}
+	@Override
+	public void updateAllowance(Allowance allowance) {
+		this.customerDao.update(allowance);
+		
 	}
 	
 }

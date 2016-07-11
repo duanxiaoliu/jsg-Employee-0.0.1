@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.jsg.base.model.BasePage;
 import com.jsg.base.service.IBaseService;
+import com.jsg.employee.model.Allowance;
 import com.jsg.employee.model.Customer;
 /**
  * 
@@ -112,4 +113,38 @@ public interface ICustomerService extends IBaseService {
 	* @date 2016-7-6 下午2:06:56
 	 */
 	List<Customer> getCustomerList();
+	/**
+	 * 
+	* @Title: getAllowanceByCustomerId 
+	* @Description: TODO(通过客户id查询补助信息) 
+	* @param @param id
+	* @param @return
+	* @return Allowance
+	* @throws 
+	* @author duanws
+	* @date 2016-7-11 下午3:45:01
+	 */
+	Allowance getAllowanceByCustomerId(String id);
+	/**
+	 * 
+	* @Title: saveAllowance 
+	* @Description: TODO(保存客户补助信息) 
+	* @param @param allowance
+	* @return void
+	* @throws 
+	* @author duanws
+	* @date 2016-7-11 下午3:52:55
+	 */
+	void saveAllowance(Allowance allowance);
+	/**
+	 * 
+	* @Title: updateAllowance 
+	* @Description: TODO(保存客户补助信息) 
+	* @param @param allowance
+	* @return void
+	* @throws 
+	* @author duanws
+	* @date 2016-7-11 下午3:53:10
+	 */
+	void updateAllowance(Allowance allowance);
 }

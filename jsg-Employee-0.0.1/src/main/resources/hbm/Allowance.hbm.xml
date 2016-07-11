@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class table="ALLOWANCE"  name="com.jsg.employee.model.Allowance">
+    <id name="id" column="ID" type="java.lang.String">
+      <generator class="uuid.hex"/>
+    </id>
+  	<property name="food" column="FOOD" type="java.lang.String"/>
+  	<property name="computer" column="COMPUTER" type="java.lang.String"/>
+  	<property name="traffic" column="TRAFFIC"/>
+  	<property name="housing" column="HOUSING"/>
+  	<property name="otherDay" column="OTHER_DAY" type="java.lang.String"/>
+	<property name="otherMouth" column="OTHER_MOUTH" type="java.lang.String"/>
+    
+    <many-to-one name="customer" column="customer" class="com.jsg.employee.model.Customer"/>
+  </class>
+</hibernate-mapping>

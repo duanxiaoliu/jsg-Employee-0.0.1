@@ -20,6 +20,7 @@ import com.jsg.base.model.BasePage;
 import com.jsg.base.service.IDicInfoService;
 import com.jsg.base.util.DataUtil;
 import com.jsg.base.util.PageUtil;
+import com.jsg.employee.model.Allowance;
 import com.jsg.employee.model.Customer;
 import com.jsg.employee.service.ICustomerService;
 /**
@@ -198,6 +199,52 @@ public class CustomerController extends BaseController {
 			return "true";
 		}
 		return "false";
+	}
+	/**
+	 * 
+	* @Title: setAllowance 
+	* @Description: TODO(设置客户的补助标准) 
+	* @param @param request
+	* @param @param model
+	* @param @return
+	* @return String
+	* @throws 
+	* @author duanws
+	* @date 2016-7-11 下午3:38:54
+	 */
+	@RequestMapping({"employeeManage/customerManage/ope-query/setAllowance"})
+	public String setAllowance(HttpServletRequest request,ModelMap model){
+		String id = request.getParameter("id");
+		Customer customer = this.customerService.getCustomerById(id);
+		//补助信息
+		Allowance allowance = this.customerService.getAllowanceByCustomerId(id);
+		model.addAttribute("allowance", allowance);
+		this.setData(customer, model);
+		
+		return "employee/customer/editAllowance";
+	}
+	/**
+	 * 
+	* @Title: saveAllowance 
+	* @Description: TODO(保存客户补助信息) 
+	* @param @param request
+	* @param @param model
+	* @param @return
+	* @return String
+	* @throws 
+	* @author duanws
+	* @date 2016-7-11 下午3:49:39
+	 */
+	@RequestMapping({"employeeManage/customerManage/ope-save/saveAllowance"})
+	public String saveAllowance(HttpServletRequest request,ModelMap model,Allowance allowance){
+		String id = allowance.getId();
+		if(DataUtil.strIsNotNull(id)){
+			this.customerService.updateAllowance(allowance);
+		}else{
+			this.customerService.saveAllowance(allowance);
+		}
+		
+		return "redirect:/employeeManage/customerManage/ope-query/queryCustomer.do?flag=1";
 	}
 	
 	/**

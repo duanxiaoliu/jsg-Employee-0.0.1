@@ -8,6 +8,7 @@ import com.jsg.base.dao.impl.BaseDaoImpl;
 import com.jsg.base.model.BasePage;
 import com.jsg.base.util.DataUtil;
 import com.jsg.employee.dao.ICustomerDao;
+import com.jsg.employee.model.Allowance;
 import com.jsg.employee.model.Customer;
 /**
  * 
@@ -44,6 +45,12 @@ public class CustomerDaoImpl extends BaseDaoImpl implements ICustomerDao {
 	public List<Customer> getCustomerList() {
 		String hql = " from Customer";
 		return this.queryList(hql, new Object[0]);
+	}
+
+	@Override
+	public Allowance getAllowanceByCustomerId(String id) {
+		String hql = " from Allowance a where a.customer.id='"+id+"'";
+		return (Allowance) this.queryUnique(hql, new Object[0]);
 	}
 
 

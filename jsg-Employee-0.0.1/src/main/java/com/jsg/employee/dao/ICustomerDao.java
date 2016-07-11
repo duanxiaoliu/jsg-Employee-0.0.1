@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.jsg.base.dao.IBaseDao;
 import com.jsg.base.model.BasePage;
+import com.jsg.employee.model.Allowance;
 import com.jsg.employee.model.Customer;
 /**
  * 
@@ -50,6 +51,16 @@ public interface ICustomerDao extends IBaseDao {
 	* @date 2016-7-6 下午2:06:56
 	 */
 	List<Customer> getCustomerList();
-
-
+	/**
+	 * 
+	* @Title: getAllowanceByCustomerId 
+	* @Description: TODO(通过客户id查询补助信息) 
+	* @param @param id
+	* @param @return
+	* @return Allowance
+	* @throws 
+	* @author duanws
+	* @date 2016-7-11 下午3:42:51
+	 */
+	Allowance getAllowanceByCustomerId(String id);
 }
