@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class table="uws_salary_result"  name="com.uws.salary.model.SalaryResult">
+    <id name="id" column="ID" type="java.lang.String">
+      <generator class="uuid.hex"/>
+    </id>
+    <property name="salaryDate" column="SALARY_DATE" type="java.lang.String"/>
+  	<property name="absenceDay" column="ABSENCE_DAY"/>
+  	<property name="absenceMoney" column="ABSENCE_MONEY"/>
+  	<property name="overTimeMoney" column="OVERTIME_MONEY"/>
+  	<property name="attendanceMoney" column="ATTENDANCE_MONEY"/>
+  	
+	<property name="promotion" column="PROMOTION"/>
+  	<property name="reward" column="REWARD"/>
+  	<property name="allowance" column="ALLOWANCE"/>
+  	<property name="mealSupplement" column="MEAL_SUPPLEMENT"/>  	
+  
+	<property name="computerSupplement" column="COMPUTER_SUPPLEMENT"/>
+  	<property name="adjustment" column="ADJUSTMENT"/>
+  	<property name="compensate" column="COMPENSATE"/>
+  	<property name="sum" column="SUM"/>   	
+  
+	<property name="socialSecurity" column="SOCIAL_SECURITY"/>
+  	<property name="fundMoney" column="FUND_MONEY"/>
+  	<property name="punish" column="PUNISH"/>
+  	<property name="other" column="OTHER"/>   
+  	<property name="tax" column="TAX"/>
+  	<property name="finnalMoney" column="FINNAL_MONEY"/>   
+  	  	
+    
+   <many-to-one name="employee" column="EMPLOYEE_ID" class="com.jsg.employee.model.Employee" lazy="false"/>
+  </class>
+</hibernate-mapping>

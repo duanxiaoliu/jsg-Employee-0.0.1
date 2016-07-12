@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class table="EMPLOYEE_SALARY"  name="com.jsg.employee.model.EmployeeSalary">
+    <id name="id" column="ID" type="java.lang.String">
+      <generator class="uuid.hex"/>
+    </id>
+  	<property name="salaryDate" column="SALARY_DATE" type="java.lang.String"/>
+  	<property name="adjustment" column="ADJUSTMENT"/>
+  	<property name="allowance" column="ALLOWANCE"/>
+  	<property name="other" column="OTHER"/>
+  	
+  	<property name="rewardItems" column="REWARD_ITEMS" type="java.lang.String"/>
+  	<property name="rewardAmount" column="REWARD_AMOUNT"/>
+  	<property name="rewardTime" column="REWARD_TIME" type="java.lang.String"/>
+
+  	<property name="resignMoney" column="RESIGN_MONEY"/>
+  	<property name="punish" column="PUNISH"/>
+  	
+  	<property name="fullTime" column="FULL_TIME" type="java.lang.Integer"/>
+  	<property name="overTime" column="OVERTIME"/>
+  	<property name="fundMoney" column="FUND_MONEY"/>
+
+  	<property name="personalLeave" column="PERSONAL_LEAVE" type="java.lang.Integer"/>
+  	<property name="tryPersonalLeave" column="TRYPERSONAL_LEAVE" type="java.lang.Integer"/>
+  	<property name="personalRemark" column="PERSONAL_REMARK" type="java.lang.String"/>
+  	<property name="annualLeave" column="ANNUAL_LEAVE" type="java.lang.Integer"/>  	
+ 
+  	<property name="annualRemark" column="ANNUAL_REMARK" type="java.lang.String"/>
+  	<property name="sickLeave" column="SICK_LEAVE" type="java.lang.Integer"/>
+  	<property name="trySickLeave" column="TRYSICK_LEAVE" type="java.lang.Integer"/>
+  	<property name="sickRemark" column="SICK_REMARK" type="java.lang.String"/>
+  	<property name="marriageLeave" column="MARRIAGE_LEAVE" type="java.lang.Integer"/>    	
+
+  	<property name="marriageRemark" column="MARRIAGE_REMARK" type="java.lang.String"/>
+  	<property name="maternityLeave" column="MATERNITY_LEAVE" type="java.lang.Integer"/>
+  	<property name="maternityRemark" column="MATERNITY_REMARK" type="java.lang.String"/>
+  	
+  	<property name="createTime" type="timestamp">
+       <column name="CREATE_TIME" length="19" />
+    </property>
+    <property name="updateTime" type="timestamp">
+       <column name="UPDATE_TIME" length="19" />
+    </property>
+    
+    <many-to-one name="employee" column="EMPLOYEE_ID" class="com.jsg.employee.model.Employee"  lazy="false"/> 
+
+    <many-to-one name="isFullTimeDic" column="IS_FULL_TIME" class="com.jsg.base.model.BaseDic" lazy="false"/>
+    <many-to-one name="isFixedDic" column="IS_FIXED" class="com.jsg.base.model.BaseDic" lazy="false"/>
+    <many-to-one name="isSelfDic" column="IS_SELF" class="com.jsg.base.model.BaseDic" lazy="false"/>
+    <many-to-one name="isComputerDic" column="IS_COMPUTER" class="com.jsg.base.model.BaseDic" lazy="false"/>
+    
+  </class>
+</hibernate-mapping>

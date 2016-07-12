@@ -152,7 +152,14 @@ public class CustomerController extends BaseController {
 	@RequestMapping({"employeeManage/customerManage/ope-view/viewCustomer"})
 	public String viewCustomer(HttpServletRequest request,ModelMap model){
 		String id = request.getParameter("id");
+		
 		Customer customer = this.customerService.getCustomerById(id);
+		//补助信息
+		Allowance allowance = this.customerService.getAllowanceByCustomerId(id);
+		if(DataUtil.objIsNotNull(allowance)){
+			model.addAttribute("allowance", allowance);
+		}
+			
 		this.setData(customer, model);
 		return "employee/customer/viewCustomer";
 	}
@@ -202,7 +209,7 @@ public class CustomerController extends BaseController {
 	}
 	/**
 	 * 
-	* @Title: setAllowance 
+	* @Title: editAllowance 
 	* @Description: TODO(设置客户的补助标准) 
 	* @param @param request
 	* @param @param model
@@ -212,13 +219,18 @@ public class CustomerController extends BaseController {
 	* @author duanws
 	* @date 2016-7-11 下午3:38:54
 	 */
-	@RequestMapping({"employeeManage/customerManage/ope-query/setAllowance"})
-	public String setAllowance(HttpServletRequest request,ModelMap model){
+	@RequestMapping({"employeeManage/customerManage/ope-query/editAllowance"})
+	public String editAllowance(HttpServletRequest request,ModelMap model,Allowance allowance){
 		String id = request.getParameter("id");
 		Customer customer = this.customerService.getCustomerById(id);
 		//补助信息
-		Allowance allowance = this.customerService.getAllowanceByCustomerId(id);
-		model.addAttribute("allowance", allowance);
+		allowance = this.customerService.getAllowanceByCustomerId(id);
+		if(DataUtil.objIsNotNull(allowance)){
+			model.addAttribute("allowance", allowance);
+		}else{
+			model.addAttribute("allowance", new Allowance());
+		}
+		
 		this.setData(customer, model);
 		
 		return "employee/customer/editAllowance";
