@@ -7,6 +7,7 @@ import com.jsg.base.model.BasePage;
 import com.jsg.base.util.DataUtil;
 import com.jsg.employee.dao.IEmployeeSalaryDao;
 import com.jsg.employee.model.EmployeeSalary;
+import com.jsg.employee.model.SalaryResult;
 /**
  * 
 * @ClassName: EmployeeSalaryDaoImpl 
@@ -33,6 +34,30 @@ public class EmployeeSalaryDaoImpl extends BaseDaoImpl implements
 		}
 		return this.queryPage(hql.toString(), pageNo, pageSize, new Object[0]);
 	}
+
+	@Override
+	public void delEmployeeSalaryById(String id,String salaryDate) {
+		String hql = " delete from EmployeeSalary e where e.employee.id='"+id+"' and e.salaryDate='"+salaryDate+"'";
+		this.executeHql(hql, new Object[0]);
+		
+	}
+
+	@Override
+	public BasePage querySalaryResult(int pageNo, int pageSize,
+			SalaryResult salaryResult) {
+		StringBuffer hql = new StringBuffer(" from SalaryResult e where 1=1");
+		//员工id
+		if(DataUtil.strIsNotNull(salaryResult.getEmployee().getId())){
+			hql.append(" and e.employee.id='"+salaryResult.getEmployee().getId()+"'");
+		}
+		//薪资年月
+		if(DataUtil.strIsNotNull(salaryResult.getSalaryDate())){
+			hql.append(" and e.salaryDate='"+salaryResult.getSalaryDate()+"'");
+		}
+		return this.queryPage(hql.toString(), pageNo, pageSize, new Object[0]);
+	}
+	
+	
 	
 	
 

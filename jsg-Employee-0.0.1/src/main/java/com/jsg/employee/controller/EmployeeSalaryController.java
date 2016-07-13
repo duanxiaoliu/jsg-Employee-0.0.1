@@ -42,24 +42,24 @@ public class EmployeeSalaryController extends BaseController {
 	* @author duanws
 	* @date 2016-7-12 下午3:37:41
 	 */
-	@RequestMapping({"employeeManage/employeeSalary/opt-query/queryEmployeeSalary"})
-	public String queryEmployeeSalary(HttpServletRequest request,EmployeeSalary employeeSalary,ModelMap model){
+	@RequestMapping({"employeeManage/employeeSalary/ope-query/queryEmployeeSalary"})
+	public String queryEmployeeSalary(HttpServletRequest request,SalaryResult salaryResult,ModelMap model){
 		String flag = request.getParameter("flag");
 		String pageNo = (request.getParameter("pageNo")!=null)?request.getParameter("pageNo"):"1";
 		HttpSession session = request.getSession();
-		BasePage page = this.employeeSalaryService.queryEmployeeSalary(Integer.parseInt(pageNo), BasePage.DEFAULT_PAGE_SIZE, employeeSalary);
+		BasePage page = this.employeeSalaryService.querySalaryResult(Integer.parseInt(pageNo), BasePage.DEFAULT_PAGE_SIZE, salaryResult);
 		String pageTag = PageUtil.getPageInfo((int)page.getTotalPageCount(),(int)page.getTotalCount());
 		
 		if(DataUtil.strIsNotNull(flag) && flag.equals("1")){
-			EmployeeSalary employeeSalaryB = (EmployeeSalary) session.getAttribute("employeeSalaryB");
-			if(DataUtil.objIsNotNull(employeeSalaryB)){
-				employeeSalary = employeeSalaryB;
+			SalaryResult salaryResultB = (SalaryResult) session.getAttribute("salaryResultB");
+			if(DataUtil.objIsNotNull(salaryResultB)){
+				salaryResult = salaryResultB;
 			}
 		}
-		session.setAttribute("employeeSalaryB", employeeSalary);
+		session.setAttribute("salaryResultB", salaryResult);
 		model.addAttribute("pageTag", pageTag);
 		model.addAttribute("page", page);
-		this.setData(model,employeeSalary,null);
+		this.setData(model,null,salaryResult);
 		
 		return "employee/employee/salary/queryEmployeeSalary";
 	}

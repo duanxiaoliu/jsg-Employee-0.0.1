@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.jsg.base.model.BasePage;
 import com.jsg.employee.dao.IEmployeeSalaryDao;
 import com.jsg.employee.model.EmployeeSalary;
+import com.jsg.employee.model.SalaryResult;
 import com.jsg.employee.service.IEmployeeSalaryService;
 /**
  * 
@@ -25,5 +26,18 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 	public BasePage queryEmployeeSalary(int pageNo, int pageSize,
 			EmployeeSalary employeeSalary) {
 		return this.employeeSalaryDao.queryEmployeeSalary(pageNo, pageSize, employeeSalary);
+	}
+
+	@Override
+	public void delEmployeeSalaryById(String id,String salaryDate) {
+		this.employeeSalaryDao.delEmployeeSalaryById(id,salaryDate);
+		
+	}
+
+	@Override
+	public BasePage querySalaryResult(int pageNo, int pageSize,
+			SalaryResult salaryResult) {
+		
+		return this.employeeSalaryDao.querySalaryResult(pageNo, pageSize, salaryResult);
 	}
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class table="uws_salary_result"  name="com.uws.salary.model.SalaryResult">
+  <class table="SALARY_RESULT"  name="com.jsg.employee.model.SalaryResult">
     <id name="id" column="ID" type="java.lang.String">
       <generator class="uuid.hex"/>
     </id>

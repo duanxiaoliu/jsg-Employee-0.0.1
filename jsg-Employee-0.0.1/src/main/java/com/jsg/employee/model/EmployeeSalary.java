@@ -45,7 +45,7 @@ public class EmployeeSalary extends BaseModel implements Serializable{
 	//罚款
 	private String punish;
 	//是否全勤
-	private BaseDic isFullTimeBaseDic;
+	private BaseDic isFullTimeDic;
 	//是否全勤处理数据字典
 	private String isFullTime;
 	//应出勤天数
@@ -53,17 +53,17 @@ public class EmployeeSalary extends BaseModel implements Serializable{
 	//加班小时数
 	private String overTime;
 	//是否固定加班费
-	private BaseDic isFixedBaseDic;
+	private BaseDic isFixedDic;
 	//是否固定加班费处理数据字典
 	private String isFixed;
 	//是否公积金自缴
-	private BaseDic isSelfBaseDic;
+	private BaseDic isSelfDic;
 	//是否公积金自缴处理数据字典
 	private String isSelf;
 	//公积金缴纳金额
 	private String fundMoney;
 	//是否有电脑补助
-	private BaseDic isComputerBaseDic;
+	private BaseDic isComputerDic;
 	//是否电脑补助处理数据字典
 	private String isComputer;
 	//试用期事假小时数
@@ -183,29 +183,29 @@ public class EmployeeSalary extends BaseModel implements Serializable{
 		this.fundMoney = fundMoney;
 	}
 
-	public BaseDic getIsFullTimeBaseDic() {
-		return isFullTimeBaseDic;
+	public BaseDic getIsFullTimeDic() {
+		return isFullTimeDic;
 	}
-	public void setIsFullTimeBaseDic(BaseDic isFullTimeBaseDic) {
-		this.isFullTimeBaseDic = isFullTimeBaseDic;
+	public void setIsFullTimeDic(BaseDic isFullTimeDic) {
+		this.isFullTimeDic = isFullTimeDic;
 	}
-	public BaseDic getIsFixedBaseDic() {
-		return isFixedBaseDic;
+	public BaseDic getIsFixedDic() {
+		return isFixedDic;
 	}
-	public void setIsFixedBaseDic(BaseDic isFixedBaseDic) {
-		this.isFixedBaseDic = isFixedBaseDic;
+	public void setIsFixedDic(BaseDic isFixedDic) {
+		this.isFixedDic = isFixedDic;
 	}
-	public BaseDic getIsSelfBaseDic() {
-		return isSelfBaseDic;
+	public BaseDic getIsSelfDic() {
+		return isSelfDic;
 	}
-	public void setIsSelfBaseDic(BaseDic isSelfBaseDic) {
-		this.isSelfBaseDic = isSelfBaseDic;
+	public void setIsSelfDic(BaseDic isSelfDic) {
+		this.isSelfDic = isSelfDic;
 	}
-	public BaseDic getIsComputerBaseDic() {
-		return isComputerBaseDic;
+	public BaseDic getIsComputerDic() {
+		return isComputerDic;
 	}
-	public void setIsComputerBaseDic(BaseDic isComputerBaseDic) {
-		this.isComputerBaseDic = isComputerBaseDic;
+	public void setIsComputerDic(BaseDic isComputerDic) {
+		this.isComputerDic = isComputerDic;
 	}
 	public int getTryPersonalLeave() {
 		return tryPersonalLeave;

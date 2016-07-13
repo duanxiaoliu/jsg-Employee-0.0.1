@@ -3,6 +3,7 @@ package com.jsg.employee.dao;
 import com.jsg.base.dao.IBaseDao;
 import com.jsg.base.model.BasePage;
 import com.jsg.employee.model.EmployeeSalary;
+import com.jsg.employee.model.SalaryResult;
 /**
  * 
 * @ClassName: IEmployeeSalaryDao 
@@ -26,4 +27,29 @@ public interface IEmployeeSalaryDao extends IBaseDao {
 	* @date 2016-7-12 下午4:08:15
 	 */
 	BasePage queryEmployeeSalary(int pageNo,int pageSize,EmployeeSalary employeeSalary);
+	/**
+	 * 
+	* @Title: delEmployeeSalaryById 
+	* @Description: TODO(通过id删除员工薪资信息) 
+	* @param @param id
+	* @return void
+	* @throws 
+	* @author duanws
+	* @date 2016-7-13 上午11:49:44
+	 */
+	void delEmployeeSalaryById(String id,String salaryDate);
+	/**
+	 * 
+	* @Title: querySalaryResult 
+	* @Description: TODO(分页查询员工薪资结果) 
+	* @param @param pageNo
+	* @param @param pageSize
+	* @param @param salaryResult
+	* @param @return
+	* @return BasePage
+	* @throws 
+	* @author duanws
+	* @date 2016-7-13 下午2:17:12
+	 */
+	BasePage querySalaryResult(int pageNo,int pageSize,SalaryResult salaryResult);
 }
