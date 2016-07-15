@@ -40,4 +40,30 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 		
 		return this.employeeSalaryDao.querySalaryResult(pageNo, pageSize, salaryResult);
 	}
+
+	@Override
+	public void saveEmployeeSalary(EmployeeSalary employeeSalary) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void saveSalaryResult(SalaryResult salaryResult) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public EmployeeSalary getEmployeeSalaryBySalaryDate(String employeeId,
+			String salaryDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SalaryResult getSalaryResultBySalaryDate(String employeeId,
+			String salaryDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

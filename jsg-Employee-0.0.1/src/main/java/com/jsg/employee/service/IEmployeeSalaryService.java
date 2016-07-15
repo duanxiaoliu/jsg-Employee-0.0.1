@@ -74,4 +74,30 @@ public interface IEmployeeSalaryService extends IBaseService {
 	* @date 2016-7-13 下午4:22:24
 	 */
 	void saveSalaryResult(SalaryResult salaryResult);
+	/**
+	 * 
+	* @Title: getEmployeeSalaryBySalaryDate 
+	* @Description: TODO(通过薪资日期查询员工薪资情况) 
+	* @param @param employeeId
+	* @param @param salaryDate
+	* @param @return
+	* @return EmployeeSalary
+	* @throws 
+	* @author duanws
+	* @date 2016-7-15 下午2:22:16
+	 */
+	EmployeeSalary getEmployeeSalaryBySalaryDate(String employeeId,String salaryDate);
+	/**
+	 * 
+	* @Title: getSalaryResultBySalaryDate 
+	* @Description: TODO(通过薪资日期查询员工薪资结果) 
+	* @param @param employeeId
+	* @param @param salaryDate
+	* @param @return
+	* @return SalaryResult
+	* @throws 
+	* @author duanws
+	* @date 2016-7-15 下午2:23:10
+	 */
+	SalaryResult getSalaryResultBySalaryDate(String employeeId,String salaryDate);
 }

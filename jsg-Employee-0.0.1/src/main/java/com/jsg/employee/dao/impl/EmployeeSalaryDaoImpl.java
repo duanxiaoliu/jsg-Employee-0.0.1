@@ -56,6 +56,20 @@ public class EmployeeSalaryDaoImpl extends BaseDaoImpl implements
 		}
 		return this.queryPage(hql.toString(), pageNo, pageSize, new Object[0]);
 	}
+
+	@Override
+	public EmployeeSalary getEmployeeSalaryBySalaryDate(String employeeId,
+			String salaryDate) {
+		String hql = " from EmployeeSalary e where e.employee.id='"+employeeId+"' and e.salaryDate='"+salaryDate+"'";
+		return (EmployeeSalary) this.queryUnique(hql, new Object[0]);
+	}
+
+	@Override
+	public SalaryResult getSalaryResultBySalaryDate(String employeeId,
+			String salaryDate) {
+		String hql = " from SalaryResult e where e.employee.id='"+employeeId+"' and e.salaryDate='"+salaryDate+"'";
+		return (SalaryResult) this.queryUnique(hql, new Object[0]);
+	}
 	
 	
 	

@@ -52,7 +52,7 @@ public class EmployeeSalary extends BaseModel implements Serializable{
 	private int fullTime;
 	//加班小时数
 	private String overTime;
-	//是否固定加班费
+	//是否有加班费
 	private BaseDic isFixedDic;
 	//是否固定加班费处理数据字典
 	private String isFixed;

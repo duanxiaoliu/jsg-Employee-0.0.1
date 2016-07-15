@@ -16,6 +16,7 @@ import com.jsg.employee.model.Employee;
 import com.jsg.employee.model.EmployeeSalary;
 import com.jsg.employee.model.SalaryResult;
 import com.jsg.employee.service.IEmployeeSalaryService;
+import com.jsg.employee.service.IEmployeeService;
 /**
  * 
 * @ClassName: EmployeeSalaryController 
@@ -29,6 +30,8 @@ public class EmployeeSalaryController extends BaseController {
 
 	@Autowired
 	private IEmployeeSalaryService employeeSalaryService;
+	@Autowired
+	private IEmployeeService employeeService;
 	/**
 	 * 
 	* @Title: queryEmployeeSalary 
@@ -63,6 +66,44 @@ public class EmployeeSalaryController extends BaseController {
 		
 		return "employee/employee/salary/queryEmployeeSalary";
 	}
+	/**
+	 * 
+	* @Title: editEmployeeSalary 
+	* @Description: TODO(新增，修改员工薪资跳转) 
+	* @param @param request
+	* @param @param model
+	* @param @return
+	* @return String
+	* @throws 
+	* @author duanws
+	* @date 2016-7-15 上午11:30:43
+	 */
+	@RequestMapping({"employeeManage/employeeSalary/ope-add/addEmployeeSalary","employeeManage/employeeSalary/ope-update/editEmployeeSalary"})
+	public String editEmployeeSalary(HttpServletRequest request,ModelMap model){
+		//员工id
+		String employeeId = request.getParameter("employeeId");
+		//薪资日期
+		String salaryDate = request.getParameter("salaryDate");
+		//员工
+		Employee employee = this.employeeService.getEmployeeById(employeeId);
+		//员工薪资情况
+		EmployeeSalary employeeSalary = this.employeeSalaryService.getEmployeeSalaryBySalaryDate(employeeId, salaryDate);
+		//员工薪资结果
+		SalaryResult salaryResult = this.employeeSalaryService.getSalaryResultBySalaryDate(employeeId, salaryDate);
+		if(!DataUtil.objIsNotNull(employeeSalary) || !DataUtil.strIsNotNull(employeeSalary.getId())){
+			employeeSalary = new EmployeeSalary();
+			employeeSalary.setEmployee(employee);
+		}
+		if(!DataUtil.objIsNotNull(salaryResult) || !DataUtil.strIsNotNull(salaryResult.getId())){
+			salaryResult = new SalaryResult();
+			salaryResult.setEmployee(employee);
+		}
+		this.setData(model, employeeSalary,salaryResult);
+		
+		return "employee/employee/salary/editEmployeeSalary";
+	}
+	
+	
 	/**
 	 * 
 	* @Title: setData 
