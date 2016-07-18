@@ -163,6 +163,8 @@ public class EmployeeSalary extends BaseModel implements Serializable{
 		this.punish = punish;
 	}
 
+
+
 	public int getFullTime() {
 		return fullTime;
 	}

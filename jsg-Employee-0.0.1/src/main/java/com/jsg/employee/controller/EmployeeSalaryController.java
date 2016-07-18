@@ -1,12 +1,14 @@
 package com.jsg.employee.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jsg.base.controller.BaseController;
 import com.jsg.base.model.BasePage;
@@ -102,7 +104,24 @@ public class EmployeeSalaryController extends BaseController {
 		
 		return "employee/employee/salary/editEmployeeSalary";
 	}
-	
+	/**
+	 * 
+	* @Title: computeSalary 
+	* @Description: TODO(计算员工薪资) 
+	* @param @param request
+	* @param @param employeeSalary
+	* @param @param model
+	* @param @return
+	* @return String
+	* @throws 
+	* @author duanws
+	* @date 2016-7-18 下午3:35:06
+	 */
+	@RequestMapping(value={"employeeManage/employeeSalary/ope-add/saveEmployeeSalary","employeeManage/employeeSalary/ope-update/saveEmployeeSalary"},produces={"text/plain;charset=UTF-8"})
+	public @ResponseBody String computeSalary(HttpServletRequest request,EmployeeSalary employeeSalary,ModelMap model){
+		
+		return "";
+	}
 	
 	/**
 	 * 

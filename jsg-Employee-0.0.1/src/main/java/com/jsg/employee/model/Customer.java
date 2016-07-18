@@ -17,11 +17,11 @@ public class Customer extends BaseModel implements Serializable {
 	//客户编号
 	private String code;
 	//加班费
-	private BigDecimal overTimeMoney;
+	private String overTimeMoney;
 	//是否有补助
 	private BaseDic isMeal;
 	//月平均工作日天数
-	private BigDecimal workDays;
+	private String workDays;
 	public String getName() {
 		return name;
 	}
@@ -34,23 +34,25 @@ public class Customer extends BaseModel implements Serializable {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public BigDecimal getOverTimeMoney() {
-		return overTimeMoney;
-	}
-	public void setOverTimeMoney(BigDecimal overTimeMoney) {
-		this.overTimeMoney = overTimeMoney;
-	}
+
 	public BaseDic getIsMeal() {
 		return isMeal;
 	}
 	public void setIsMeal(BaseDic isMeal) {
 		this.isMeal = isMeal;
 	}
-	public BigDecimal getWorkDays() {
+	public String getOverTimeMoney() {
+		return overTimeMoney;
+	}
+	public void setOverTimeMoney(String overTimeMoney) {
+		this.overTimeMoney = overTimeMoney;
+	}
+	public String getWorkDays() {
 		return workDays;
 	}
-	public void setWorkDays(BigDecimal workDays) {
+	public void setWorkDays(String workDays) {
 		this.workDays = workDays;
 	}
+
 
 }

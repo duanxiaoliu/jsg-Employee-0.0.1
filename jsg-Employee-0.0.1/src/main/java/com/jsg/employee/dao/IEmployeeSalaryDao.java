@@ -1,5 +1,7 @@
 package com.jsg.employee.dao;
 
+import java.util.List;
+
 import com.jsg.base.dao.IBaseDao;
 import com.jsg.base.model.BasePage;
 import com.jsg.employee.model.EmployeeSalary;
@@ -79,4 +81,30 @@ public interface IEmployeeSalaryDao extends IBaseDao {
 	* @date 2016-7-15 下午2:23:10
 	 */
 	SalaryResult getSalaryResultBySalaryDate(String employeeId,String salaryDate);
+	/**
+	 * 
+	* @Title: getSumSickLeave 
+	* @Description: TODO(合算本年已休病假数) 
+	* @param @param employeeId
+	* @param @param year
+	* @param @return
+	* @return List<Object[]>
+	* @throws 
+	* @author duanws
+	* @date 2016-7-18 下午4:23:09
+	 */
+	List<Object[]> getSumSickLeave(String employeeId,String year);
+	/**
+	 * 
+	* @Title: getSumAnnualLeave 
+	* @Description: TODO(合算本年已休年假数) 
+	* @param @param employeeId
+	* @param @param year
+	* @param @return
+	* @return Object
+	* @throws 
+	* @author duanws
+	* @date 2016-7-19 下午1:43:05
+	 */
+	List<Object[]> getSumAnnualLeave(String employeeId,String year);
 }

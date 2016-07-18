@@ -76,6 +76,18 @@ public interface IEmployeeSalaryService extends IBaseService {
 	void saveSalaryResult(SalaryResult salaryResult);
 	/**
 	 * 
+	* @Title: computeSalary 
+	* @Description: TODO(计算员工薪资) 
+	* @param @param employeeSalary
+	* @param @return
+	* @return SalaryResult
+	* @throws 
+	* @author duanws
+	* @date 2016-7-18 下午3:54:06
+	 */
+	SalaryResult computeSalary(EmployeeSalary employeeSalary);
+	/**
+	 * 
 	* @Title: getEmployeeSalaryBySalaryDate 
 	* @Description: TODO(通过薪资日期查询员工薪资情况) 
 	* @param @param employeeId

@@ -1,5 +1,7 @@
 package com.jsg.employee.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.jsg.base.dao.impl.BaseDaoImpl;
@@ -69,6 +71,18 @@ public class EmployeeSalaryDaoImpl extends BaseDaoImpl implements
 			String salaryDate) {
 		String hql = " from SalaryResult e where e.employee.id='"+employeeId+"' and e.salaryDate='"+salaryDate+"'";
 		return (SalaryResult) this.queryUnique(hql, new Object[0]);
+	}
+
+	@Override
+	public List<Object[]> getSumSickLeave(String employeeId, String year) {
+		StringBuffer hql = new StringBuffer(" select sum(es.sickLeave) as sickLeave,sum(es.trySickLeave) as trySickLeave from EmployeeSalary es where es.employee.id='"+employeeId+"' and es.salaryDate like'%"+year+"%'");
+		return this.queryList(hql.toString(), new Object[0]);
+	}
+
+	@Override
+	public List<Object[]> getSumAnnualLeave(String employeeId, String year) {
+		StringBuffer hql = new StringBuffer(" select sum(es.annualLeave) as annualLeave from EmployeeSalary es where es.employee.id='"+employeeId+"' and es.salaryDate.like'%"+year+"%'");
+		return this.queryList(hql.toString(), new Object[0]);
 	}
 	
 	
