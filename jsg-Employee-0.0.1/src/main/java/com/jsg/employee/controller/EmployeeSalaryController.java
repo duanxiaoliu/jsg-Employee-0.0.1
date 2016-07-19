@@ -1,17 +1,24 @@
 package com.jsg.employee.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jsg.base.controller.BaseController;
+import com.jsg.base.model.BaseDic;
 import com.jsg.base.model.BasePage;
+import com.jsg.base.service.IDicInfoService;
 import com.jsg.base.util.DataUtil;
 import com.jsg.base.util.PageUtil;
 import com.jsg.employee.model.Employee;
@@ -34,6 +41,8 @@ public class EmployeeSalaryController extends BaseController {
 	private IEmployeeSalaryService employeeSalaryService;
 	@Autowired
 	private IEmployeeService employeeService;
+	@Autowired
+	private IDicInfoService dicService;
 	/**
 	 * 
 	* @Title: queryEmployeeSalary 
@@ -119,8 +128,61 @@ public class EmployeeSalaryController extends BaseController {
 	 */
 	@RequestMapping(value={"employeeManage/employeeSalary/ope-add/saveEmployeeSalary","employeeManage/employeeSalary/ope-update/saveEmployeeSalary"},produces={"text/plain;charset=UTF-8"})
 	public @ResponseBody String computeSalary(HttpServletRequest request,EmployeeSalary employeeSalary,ModelMap model){
-		
-		return "";
+		SalaryResult salaryResult = this.employeeSalaryService.computeSalary(employeeSalary);
+		salaryResult.setEmployee(null);
+		//将员工薪资计算结果转成json格式用于页面显示
+		JSONObject obj = JSONObject.fromObject(salaryResult);
+		return obj.toString();
+	}
+	/**
+	 * 
+	* @Title: viewEmployeeSalaryResult 
+	* @Description: TODO(查看员工薪资信息) 
+	* @param @param request
+	* @param @param model
+	* @param @return
+	* @return String
+	* @throws 
+	* @author duanws
+	* @date 2016-7-19 上午11:47:42
+	 */
+	@RequestMapping({"employeeManage/employeeSalary/ope-view/viewEmployeeSalary"})
+	public String viewEmployeeSalaryResult(HttpServletRequest request,ModelMap model){
+		//员工id
+		String employeeId = request.getParameter("employeeId");
+		//薪资日期
+		String salaryDate = request.getParameter("salaryDate");
+		//员工
+		Employee employee = this.employeeService.getEmployeeById(employeeId);
+		//员工薪资情况
+		EmployeeSalary employeeSalary = this.employeeSalaryService.getEmployeeSalaryBySalaryDate(employeeId, salaryDate);
+		//员工薪资结果
+		SalaryResult salaryResult = this.employeeSalaryService.getSalaryResultBySalaryDate(employeeId, salaryDate);
+		this.setData(model, employeeSalary, salaryResult);
+		return "employee/employee/salary/viewEmployeeSalary";
+	}
+	/**
+	 * 
+	* @Title: delEmployeeSalaryByIdDate 
+	* @Description: TODO(删除员工薪资信息) 
+	* @param @param employeeId
+	* @param @param salaryDate
+	* @param @param request
+	* @param @return
+	* @return String
+	* @throws 
+	* @author duanws
+	* @date 2016-7-19 下午2:03:13
+	 */
+	@RequestMapping(value={"employeeManage/employeeSalary/ope-del/delEmployeeSalary/{employeeId}/{salaryDate}"},produces={"text/palin;charset=UTF-8"})
+	public @ResponseBody String delEmployeeSalaryByIdDate(@PathVariable("employeeId") String employeeId,@PathVariable("salaryDate") String salaryDate,HttpServletRequest request){
+		try{
+			this.employeeSalaryService.delEmployeeSalaryByIdDate(employeeId, salaryDate);
+			this.employeeSalaryService.delSalaryResultByIdDate(employeeId, salaryDate);
+		}catch(Exception e){
+			return "error";
+		}
+		return "success";
 	}
 	
 	/**
@@ -136,9 +198,10 @@ public class EmployeeSalaryController extends BaseController {
 	* @date 2016-7-12 下午3:43:30
 	 */
 	private void setData(ModelMap model,EmployeeSalary employeeSalary,SalaryResult salaryResult){
+		List<BaseDic> YNDicList = this.dicService.getDicListByCode("Y_N");
 		
-		
-		
+		//是否
+		model.addAttribute("YNDicList", YNDicList);
 		model.addAttribute("employeeSalary", employeeSalary);
 		model.addAttribute("salaryResult", salaryResult);
 	}

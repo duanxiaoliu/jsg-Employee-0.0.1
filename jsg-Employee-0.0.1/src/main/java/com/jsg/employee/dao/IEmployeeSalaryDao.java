@@ -107,4 +107,41 @@ public interface IEmployeeSalaryDao extends IBaseDao {
 	* @date 2016-7-19 下午1:43:05
 	 */
 	List<Object[]> getSumAnnualLeave(String employeeId,String year);
+	/**
+	 * 
+	* @Title: getRwardByDate 
+	* @Description: TODO(通过薪资年月查询奖励金额) 
+	* @param @param employeeId
+	* @param @param salaryDate
+	* @param @return
+	* @return EmployeeSalary
+	* @throws 
+	* @author duanws
+	* @date 2016-7-19 下午1:22:15
+	 */
+	EmployeeSalary getRwardByDate(String employeeId,String salaryDate);
+	/**
+	 * 
+	* @Title: delEmployeeSalaryByIdDate 
+	* @Description: TODO(通过员工id和薪资日期删除员工薪资情况) 
+	* @param @param employeeId
+	* @param @param salaryDate
+	* @return void
+	* @throws 
+	* @author duanws
+	* @date 2016-7-19 下午1:23:25
+	 */
+	void delEmployeeSalaryByIdDate(String employeeId,String salaryDate);
+	/**
+	 * 
+	* @Title: delSalaryResultByIdDate 
+	* @Description: TODO(通过员工id和薪资日期删除员工薪资结果) 
+	* @param @param employeeId
+	* @param @param salaryDate
+	* @return void
+	* @throws 
+	* @author duanws
+	* @date 2016-7-19 下午1:24:19
+	 */
+	void delSalaryResultByIdDate(String employeeId,String salaryDate);
 }

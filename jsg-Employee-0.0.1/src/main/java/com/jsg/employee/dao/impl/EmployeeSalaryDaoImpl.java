@@ -84,6 +84,25 @@ public class EmployeeSalaryDaoImpl extends BaseDaoImpl implements
 		StringBuffer hql = new StringBuffer(" select sum(es.annualLeave) as annualLeave from EmployeeSalary es where es.employee.id='"+employeeId+"' and es.salaryDate.like'%"+year+"%'");
 		return this.queryList(hql.toString(), new Object[0]);
 	}
+
+	@Override
+	public EmployeeSalary getRwardByDate(String employeeId, String salaryDate) {
+		StringBuffer hql = new StringBuffer(" from EmployeeSalary es where es.rewardTime='"+salaryDate+"' and es.employee.id='"+employeeId+"'");
+		return (EmployeeSalary) this.queryUnique(hql.toString(), new Object[0]);
+	}
+
+	@Override
+	public void delEmployeeSalaryByIdDate(String employeeId, String salaryDate) {
+		String hql = " delete from EmployeeSalary es where es.employee.id='"+employeeId+"' and es.salaryDate='"+salaryDate+"'";
+		this.executeHql(hql, new Object[0]);
+	}
+
+	@Override
+	public void delSalaryResultByIdDate(String employeeId, String salaryDate) {
+		String hql = " delete from SalaryResult es where es.employee.id='"+employeeId+"' and es.salaryDate='"+salaryDate+"'";
+		this.executeHql(hql, new Object[0]);
+		
+	}
 	
 	
 	

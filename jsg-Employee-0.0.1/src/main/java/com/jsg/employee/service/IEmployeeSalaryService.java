@@ -52,28 +52,7 @@ public interface IEmployeeSalaryService extends IBaseService {
 	* @date 2016-7-13 下午2:16:26
 	 */
 	BasePage querySalaryResult(int pageNo,int pageSize,SalaryResult salaryResult);
-	/**
-	 * 
-	* @Title: saveEmployeeSalary 
-	* @Description: TODO(保存员工薪资情况) 
-	* @param @param employeeSalary
-	* @return void
-	* @throws 
-	* @author duanws
-	* @date 2016-7-13 下午4:21:44
-	 */
-	void saveEmployeeSalary(EmployeeSalary employeeSalary);
-	/**
-	 * 
-	* @Title: saveSalaryResult 
-	* @Description: TODO(保存员工薪资结果) 
-	* @param @param salaryResult
-	* @return void
-	* @throws 
-	* @author duanws
-	* @date 2016-7-13 下午4:22:24
-	 */
-	void saveSalaryResult(SalaryResult salaryResult);
+
 	/**
 	 * 
 	* @Title: computeSalary 
@@ -112,4 +91,28 @@ public interface IEmployeeSalaryService extends IBaseService {
 	* @date 2016-7-15 下午2:23:10
 	 */
 	SalaryResult getSalaryResultBySalaryDate(String employeeId,String salaryDate);
+	/**
+	 * 
+	* @Title: delEmployeeSalaryByIdDate 
+	* @Description: TODO(通过员工id和薪资月份删除员工薪资情况) 
+	* @param @param employeeId
+	* @param @param salaryDate
+	* @return void
+	* @throws 
+	* @author duanws
+	* @date 2016-7-19 下午1:30:16
+	 */
+	void delEmployeeSalaryByIdDate(String employeeId,String salaryDate);
+	/**
+	 * 
+	* @Title: delSalaryResultByIdDate 
+	* @Description: TODO(通过员工id和薪资月份删除员工薪资结果) 
+	* @param @param employeeId
+	* @param @param salaryDate
+	* @return void
+	* @throws 
+	* @author duanws
+	* @date 2016-7-19 下午1:30:48
+	 */
+	void delSalaryResultByIdDate(String employeeId,String salaryDate);
 }
