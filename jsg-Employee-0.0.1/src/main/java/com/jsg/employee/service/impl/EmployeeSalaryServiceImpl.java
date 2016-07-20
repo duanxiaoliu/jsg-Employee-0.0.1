@@ -15,6 +15,7 @@ import com.jsg.employee.dao.ICustomerDao;
 import com.jsg.employee.dao.IEmployeeDao;
 import com.jsg.employee.dao.IEmployeeSalaryDao;
 import com.jsg.employee.model.Allowance;
+import com.jsg.employee.model.Customer;
 import com.jsg.employee.model.Employee;
 import com.jsg.employee.model.EmployeeSalary;
 import com.jsg.employee.model.SalaryResult;
@@ -118,8 +119,14 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 	//----------------------工资合算------------START----------------------------------------------------------------
 		//合算工资
 		private SalaryResult getSalaryResult(EmployeeSalary employeeSalary,Employee employee,SalaryResult salaryResult) throws Exception{
+			//员工所在客户
+			Customer customer = employee.getCustomer();
 			//获得客户的补助标准
-			Allowance Callowance = this.customerDao.getAllowanceByCustomerId(employee.getCustomer().getId());
+			Allowance Callowance = this.customerDao.getAllowanceByCustomerId(customer.getId());
+			//是否补助
+			String isAllowance = customer.getIsMeal().getCode();
+			//工资及补偿总额
+			double sumMoney = 0.00;
 			//入职日期天
 			int eDays = Integer.parseInt(employee.getEntryTime().toString().substring(8,10));
 			//是否转正
@@ -136,8 +143,6 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 			salaryResult.setAbsenceDay(String.valueOf(this.getAbsenceDay(employeeSalary)));
 			//缺勤扣款
 			salaryResult.setAbsenceMoney(String.valueOf(this.getAbsenceMoney(employeeSalary, employee)));
-			//加班费及补助
-			salaryResult.setOverTimeMoney(String.valueOf(this.getOverTimeMoney(employeeSalary, employee) + this.getMealSupplement(employeeSalary, employee) + this.getComputerSupplement(employeeSalary, employee,Callowance) ));
 			//出勤工资--基本工资减去缺勤扣款
 			salaryResult.setAttendanceMoney(String.valueOf(baseSalary- this.getAbsenceMoney(employeeSalary, employee)));
 			//转正工资调整
@@ -148,16 +153,31 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 			//岗位津贴
 			String allowance = employeeSalary.getAllowance()!=null?employeeSalary.getAllowance():"0";
 			salaryResult.setAllowance(allowance);
-			//餐补
-			salaryResult.setMealSupplement(String.valueOf(this.getMealSupplement(employeeSalary, employee)));
-			//电脑补助
-			salaryResult.setComputerSupplement(String.valueOf(this.getComputerSupplement(employeeSalary, employee,Callowance)));
 			//上月调整
 			salaryResult.setAdjustment(employeeSalary.getAdjustment()!=null?employeeSalary.getAdjustment():"0");
 			//离职补偿金
 			salaryResult.setCompensate(employeeSalary.getResignMoney()!=null?employeeSalary.getResignMoney():"0");
-			//工资及补偿总额
-			double sumMoney = baseSalary - this.getAbsenceMoney(employeeSalary, employee) + reward + allowance + this.getMealSupplement(employeeSalary, employee) + this.getComputerSupplement(employeeSalary, employee,Callowance) + employeeSalary.getAdjustment()!=null?Double.parseDouble(employeeSalary.getAdjustment()):0.00 + employeeSalary.getResignMoney()!=null?Double.parseDouble(employeeSalary.getResignMoney()):0.00 + promotion + this.getOverTimeMoney(employeeSalary, employee);
+			//判断是否有补助
+			if("NO".equals(isAllowance)){
+				//加班费及补助
+				salaryResult.setOverTimeMoney(String.valueOf(this.getOverTimeMoney(employeeSalary, employee)));
+				//餐补
+				salaryResult.setMealSupplement("0.00");
+				//电脑补助
+				salaryResult.setComputerSupplement("0.00");
+				//工资及补偿总额
+				sumMoney =  baseSalary - this.getAbsenceMoney(employeeSalary, employee) + reward + allowance + employeeSalary.getAdjustment()!=null?Double.parseDouble(employeeSalary.getAdjustment()):0.00 + employeeSalary.getResignMoney()!=null?Double.parseDouble(employeeSalary.getResignMoney()):0.00 + promotion + this.getOverTimeMoney(employeeSalary, employee);
+				
+			}else{
+				//加班费及补助
+				salaryResult.setOverTimeMoney(String.valueOf(this.getOverTimeMoney(employeeSalary, employee) + this.getMealSupplement(employeeSalary, employee,Callowance) + this.getComputerSupplement(employeeSalary, employee,Callowance) ));
+				//电脑补助
+				salaryResult.setComputerSupplement(String.valueOf(this.getComputerSupplement(employeeSalary, employee,Callowance)));
+				//餐补
+				salaryResult.setMealSupplement(String.valueOf(this.getMealSupplement(employeeSalary, employee,Callowance)));
+				//工资及补偿总额
+				sumMoney =  baseSalary - this.getAbsenceMoney(employeeSalary, employee) + reward + allowance + this.getMealSupplement(employeeSalary, employee,Callowance) + this.getComputerSupplement(employeeSalary, employee,Callowance) + this.getTraffic(employeeSalary, employee, Callowance) + this.getOtherDay(employeeSalary, employee, Callowance) + Callowance.getHousing()!=null?Double.parseDouble(Callowance.getHousing()):0.00 + Callowance.getOtherMouth()!=null?Double.parseDouble(Callowance.getOtherMouth()):0.00 + employeeSalary.getAdjustment()!=null?Double.parseDouble(employeeSalary.getAdjustment()):0.00 + employeeSalary.getResignMoney()!=null?Double.parseDouble(employeeSalary.getResignMoney()):0.00 + promotion + this.getOverTimeMoney(employeeSalary, employee);
+			}
 			salaryResult.setSum(String.valueOf(sumMoney));
 			//社保
 			
@@ -309,9 +329,14 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 		* @author duanws
 		* @date 2016-7-19 上午11:03:00
 		 */
-		private double getMealSupplement(EmployeeSalary employeeSalary,Employee employee) throws Exception{
+		private double getMealSupplement(EmployeeSalary employeeSalary,Employee employee,Allowance allowance) throws Exception{
 			double mealSupplement = 0.00;
-			
+			double mealDay = 0.00;
+			if(allowance.getFood()!=null || allowance.getFood()=="0" || "0".equals(allowance.getFood())){
+				return 0.00;
+			}else{
+				mealDay = Double.parseDouble(allowance.getFood());
+			}
 			//是否转正
 			String isFullMemberStr = this.salaryUtils.getFullMember(employee, employeeSalary.getSalaryDate());
 			//是否在职
@@ -344,21 +369,21 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 			String isMealCode = employee.getCustomer().getIsMeal().getCode();
 			if("Y_MEAL".equals(isMealCode)){
 				if("Y".equals(isFullTime)){
-					mealSupplement = attendanceTime * 10 ;
+					mealSupplement = attendanceTime * mealDay ;
 					
 				}else{
 					//当月转正状态
 					 if("当月转正".equals(isFullMemberStr)){
 						//入职
 						if(eDays<=15){
-							mealSupplement = 200 - 10 * (double)wDay - ((double)realDay-(Math.floor(((double)employeeSalary.getPersonalLeave()/8)+((double)employeeSalary.getTryPersonalLeave()/8))+employeeSalary.getAnnualLeave()+Math.floor((employeeSalary.getSickLeave()+employeeSalary.getTrySickLeave())/8)+employeeSalary.getMarriageLeave() + employeeSalary.getMaternityLeave()+employeeSalary.getFuneralLeave()));
+							mealSupplement = mealDay * ((double)realDay-(Math.floor(((double)employeeSalary.getPersonalLeave()/8)+((double)employeeSalary.getTryPersonalLeave()/8))+employeeSalary.getAnnualLeave()+Math.floor((employeeSalary.getSickLeave()+employeeSalary.getTrySickLeave())/8)+employeeSalary.getMarriageLeave() + employeeSalary.getMaternityLeave()+employeeSalary.getFuneralLeave()));
 						}else{
 							//有问题，应是入职月实际出勤天数
-							mealSupplement = 10 * attendanceTime;
+							mealSupplement = mealDay * attendanceTime;
 						}
 					 }else{
 						 //转正状态
-						 mealSupplement = attendanceTime * 10;
+						 mealSupplement = attendanceTime * mealDay;
 					 }
 					 if("N_JOB".equals(isJobCode)){
 						 String quitDateMouth = employee.getQuitTime().toString().substring(0, 7);
@@ -367,9 +392,9 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 							int qDays = Integer.parseInt(employee.getQuitTime().toString().substring(8,10));
 							//离职
 							if(qDays<=15){
-								mealSupplement =  10 * attendanceTime;
+								mealSupplement =  mealDay * attendanceTime;
 							}else{
-								mealSupplement = 200-10 * (double)wDay - ((double)realDay-(Math.floor(((double)employeeSalary.getPersonalLeave()/8)+((double)employeeSalary.getTryPersonalLeave()/8))+employeeSalary.getAnnualLeave()+Math.floor((employeeSalary.getSickLeave()+employeeSalary.getTrySickLeave())/8)+employeeSalary.getMarriageLeave() + employeeSalary.getMaternityLeave()+employeeSalary.getFuneralLeave()));
+								mealSupplement = mealDay * ((double)realDay-(Math.floor(((double)employeeSalary.getPersonalLeave()/8)+((double)employeeSalary.getTryPersonalLeave()/8))+employeeSalary.getAnnualLeave()+Math.floor((employeeSalary.getSickLeave()+employeeSalary.getTrySickLeave())/8)+employeeSalary.getMarriageLeave() + employeeSalary.getMaternityLeave()+employeeSalary.getFuneralLeave()));
 								
 							}
 						 }
@@ -440,7 +465,7 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 				 if("当月转正".equals(isFullMemberStr)){
 					//入职
 					if(eDays<=15){
-						computerSupplement = computerMoney *(double)realDay;
+						computerSupplement = computerMoney *((double)realDay-(Math.floor(((double)employeeSalary.getPersonalLeave()/8)+((double)employeeSalary.getTryPersonalLeave()/8))+employeeSalary.getAnnualLeave()+Math.floor((employeeSalary.getSickLeave()+employeeSalary.getTrySickLeave())/8)+employeeSalary.getMarriageLeave() + employeeSalary.getMaternityLeave()+employeeSalary.getFuneralLeave()));
 					}else{
 						//有问题，应是入职月实际出勤天数
 						computerSupplement =computerMoney * attendanceTime;
@@ -464,16 +489,208 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 							if(qDays<=15){
 								computerSupplement =  computerMoney * attendanceTime;
 							}else{
-								computerSupplement = computerMoney * (double)qRealDay;
+								computerSupplement = computerMoney * ((double)realDay-(Math.floor(((double)employeeSalary.getPersonalLeave()/8)+((double)employeeSalary.getTryPersonalLeave()/8))+employeeSalary.getAnnualLeave()+Math.floor((employeeSalary.getSickLeave()+employeeSalary.getTrySickLeave())/8)+employeeSalary.getMarriageLeave() + employeeSalary.getMaternityLeave()+employeeSalary.getFuneralLeave()));
 							}
 					 }
 				 }else{
 					 //转正状态
-					 computerSupplement = attendanceTime *5 ;
+					 computerSupplement = attendanceTime * computerMoney ;
 				 }
 			}
 			return computerSupplement;
 		}
+		/**
+		 * 
+		* @Title: getTraffic 
+		* @Description: TODO(交通补助) 
+		* @param @param employeeSalary
+		* @param @param employee
+		* @param @param allowance
+		* @param @return
+		* @param @throws Exception
+		* @return double
+		* @throws 
+		* @author duanws
+		* @date 2016-7-20 下午2:34:20
+		 */
+		private double getTraffic(EmployeeSalary employeeSalary,Employee employee,Allowance allowance) throws Exception{
+			double trafficSupplement = 0.00;
+			double trafficDay = 0.00;
+			if(allowance.getTraffic()!=null || allowance.getTraffic()=="0" || "0".equals(allowance.getTraffic())){
+				return 0.00;
+			}else{
+				trafficDay = Double.parseDouble(allowance.getTraffic());
+			}
+			//是否转正
+			String isFullMemberStr = this.salaryUtils.getFullMember(employee, employeeSalary.getSalaryDate());
+			//是否在职
+			String isJobCode = employee.getIsJob().getCode();
+			String salaryDate = employeeSalary.getSalaryDate();
+			//获得当月天数
+			Calendar days = this.getDays(Integer.parseInt(salaryDate.substring(0, 4)), Integer.parseInt(salaryDate.substring(5, 7)));
+			//获得当月第一天
+			Calendar dayOne = Calendar.getInstance();
+			dayOne.set(Calendar.YEAR, Integer.parseInt(salaryDate.substring(0, 4)));
+			dayOne.set(Calendar.MONTH, Integer.parseInt(salaryDate.substring(5, 7)));
+			dayOne.set(Calendar.DATE, 1);
+			//当月工作日
+			int wDay = salaryUtils.getWorkingDay(dayOne, days);
+			//入职日期天
+			int eDays = Integer.parseInt(employee.getEntryTime().toString().substring(8,10));
+			//入职日期
+			Calendar eCDays = Calendar.getInstance();
+			String entryTimeStr = employee.getEntryTime();
+			
+			eCDays.setTime(sdf.parse(entryTimeStr));
+			//员工入职当月实际出勤天数
+			int realDay = salaryUtils.getWorkingDay(eCDays, days);
+			//是否全勤
+			String isFullTime = employeeSalary.getIsFullTimeDic().getCode();
+			//应出勤天数
+			int fullTime = employeeSalary.getFullTime();
+			//出勤天数减去各种假
+			double attendanceTime = getAttendanceTime(employeeSalary);
+			//员工所在客户
+			String customer = employee.getCustomer().getName();
+			if("Y".equals(isFullTime)){
+				trafficSupplement = attendanceTime * trafficDay;
+				
+			}else{
+				//当月转正状态
+				 if("当月转正".equals(isFullMemberStr)){
+					//入职
+					if(eDays<=15){
+						trafficSupplement = trafficDay *((double)realDay-(Math.floor(((double)employeeSalary.getPersonalLeave()/8)+((double)employeeSalary.getTryPersonalLeave()/8))+employeeSalary.getAnnualLeave()+Math.floor((employeeSalary.getSickLeave()+employeeSalary.getTrySickLeave())/8)+employeeSalary.getMarriageLeave() + employeeSalary.getMaternityLeave()+employeeSalary.getFuneralLeave()));
+					}else{
+						//有问题，应是入职月实际出勤天数
+						trafficSupplement =trafficDay * attendanceTime;
+					}
+				 }else{
+					 //转正状态
+					 trafficSupplement = attendanceTime * trafficDay;
+				 }
+				 if("N_JOB".equals(isJobCode)){
+					//离职日期
+					Calendar qCDays = Calendar.getInstance();
+					String quitTimeStr = employee.getQuitTime();
+					qCDays.setTime(sdf.parse(quitTimeStr));
+					//员工离职当月实际出勤天数
+					int qRealDay = salaryUtils.getWorkingDay(qCDays, days);
+					//离职
+					 String quitDateMouth = employee.getQuitTime().toString().substring(0, 7);
+					 if(salaryDate.equals(quitDateMouth)){
+						//离职日期天
+							int qDays = Integer.parseInt(employee.getQuitTime().toString().substring(8,10));
+							if(qDays<=15){
+								trafficSupplement =  trafficDay * attendanceTime;
+							}else{
+								trafficSupplement = trafficDay * ((double)realDay-(Math.floor(((double)employeeSalary.getPersonalLeave()/8)+((double)employeeSalary.getTryPersonalLeave()/8))+employeeSalary.getAnnualLeave()+Math.floor((employeeSalary.getSickLeave()+employeeSalary.getTrySickLeave())/8)+employeeSalary.getMarriageLeave() + employeeSalary.getMaternityLeave()+employeeSalary.getFuneralLeave()));
+							}
+					 }
+				 }else{
+					 //转正状态
+					 trafficSupplement = attendanceTime * trafficDay ;
+				 }
+			}
+			return trafficSupplement;
+		}
+		/**
+		 * 
+		* @Title: getOtherDay 
+		* @Description: TODO(其它补助每天) 
+		* @param @param employeeSalary
+		* @param @param employee
+		* @param @param allowance
+		* @param @return
+		* @param @throws Exception
+		* @return double
+		* @throws 
+		* @author duanws
+		* @date 2016-7-20 下午2:35:02
+		 */
+		private double getOtherDay(EmployeeSalary employeeSalary,Employee employee,Allowance allowance) throws Exception{
+			double otherDaySupplement = 0.00;
+			double otherDay = 0.00;
+			if(allowance.getOtherDay()!=null || allowance.getOtherDay()=="0" || "0".equals(allowance.getOtherDay())){
+				return 0.00;
+			}else{
+				otherDay = Double.parseDouble(allowance.getOtherDay());
+			}
+			//是否转正
+			String isFullMemberStr = this.salaryUtils.getFullMember(employee, employeeSalary.getSalaryDate());
+			//是否在职
+			String isJobCode = employee.getIsJob().getCode();
+			String salaryDate = employeeSalary.getSalaryDate();
+			//获得当月天数
+			Calendar days = this.getDays(Integer.parseInt(salaryDate.substring(0, 4)), Integer.parseInt(salaryDate.substring(5, 7)));
+			//获得当月第一天
+			Calendar dayOne = Calendar.getInstance();
+			dayOne.set(Calendar.YEAR, Integer.parseInt(salaryDate.substring(0, 4)));
+			dayOne.set(Calendar.MONTH, Integer.parseInt(salaryDate.substring(5, 7)));
+			dayOne.set(Calendar.DATE, 1);
+			//当月工作日
+			int wDay = salaryUtils.getWorkingDay(dayOne, days);
+			//入职日期天
+			int eDays = Integer.parseInt(employee.getEntryTime().toString().substring(8,10));
+			//入职日期
+			Calendar eCDays = Calendar.getInstance();
+			String entryTimeStr = employee.getEntryTime();
+			
+			eCDays.setTime(sdf.parse(entryTimeStr));
+			//员工入职当月实际出勤天数
+			int realDay = salaryUtils.getWorkingDay(eCDays, days);
+			//是否全勤
+			String isFullTime = employeeSalary.getIsFullTimeDic().getCode();
+			//应出勤天数
+			int fullTime = employeeSalary.getFullTime();
+			//出勤天数减去各种假
+			double attendanceTime = getAttendanceTime(employeeSalary);
+			//员工所在客户
+			String customer = employee.getCustomer().getName();
+			if("Y".equals(isFullTime)){
+				otherDaySupplement = attendanceTime * otherDay;
+				
+			}else{
+				//当月转正状态
+				 if("当月转正".equals(isFullMemberStr)){
+					//入职
+					if(eDays<=15){
+						otherDaySupplement = otherDay *((double)realDay-(Math.floor(((double)employeeSalary.getPersonalLeave()/8)+((double)employeeSalary.getTryPersonalLeave()/8))+employeeSalary.getAnnualLeave()+Math.floor((employeeSalary.getSickLeave()+employeeSalary.getTrySickLeave())/8)+employeeSalary.getMarriageLeave() + employeeSalary.getMaternityLeave()+employeeSalary.getFuneralLeave()));
+					}else{
+						//有问题，应是入职月实际出勤天数
+						otherDaySupplement =otherDay * attendanceTime;
+					}
+				 }else{
+					 //转正状态
+					 otherDaySupplement = attendanceTime * otherDay;
+				 }
+				 if("N_JOB".equals(isJobCode)){
+					//离职日期
+					Calendar qCDays = Calendar.getInstance();
+					String quitTimeStr = employee.getQuitTime();
+					qCDays.setTime(sdf.parse(quitTimeStr));
+					//员工离职当月实际出勤天数
+					int qRealDay = salaryUtils.getWorkingDay(qCDays, days);
+					//离职
+					 String quitDateMouth = employee.getQuitTime().toString().substring(0, 7);
+					 if(salaryDate.equals(quitDateMouth)){
+						//离职日期天
+							int qDays = Integer.parseInt(employee.getQuitTime().toString().substring(8,10));
+							if(qDays<=15){
+								otherDaySupplement =  otherDay * attendanceTime;
+							}else{
+								otherDaySupplement = otherDay * ((double)realDay-(Math.floor(((double)employeeSalary.getPersonalLeave()/8)+((double)employeeSalary.getTryPersonalLeave()/8))+employeeSalary.getAnnualLeave()+Math.floor((employeeSalary.getSickLeave()+employeeSalary.getTrySickLeave())/8)+employeeSalary.getMarriageLeave() + employeeSalary.getMaternityLeave()+employeeSalary.getFuneralLeave()));
+							}
+					 }
+				 }else{
+					 //转正状态
+					 otherDaySupplement = attendanceTime * otherDay ;
+				 }
+			}
+			return otherDaySupplement;
+		}
+		
+		
 		/**
 		 * 
 		* @Title: getAnnualLeave 

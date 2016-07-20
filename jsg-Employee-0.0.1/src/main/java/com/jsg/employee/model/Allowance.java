@@ -22,9 +22,9 @@ public class Allowance extends BaseModel implements Serializable{
 	private String traffic;
 	//住房
 	private String housing;
-	//其它补助`天
+	//其它补助/天
 	private String otherDay;
-	//其它补助`月
+	//其它补助/月
 	private String otherMouth;
 	//客户
 	private Customer customer;
