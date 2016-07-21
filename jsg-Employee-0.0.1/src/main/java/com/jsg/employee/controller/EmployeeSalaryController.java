@@ -184,6 +184,22 @@ public class EmployeeSalaryController extends BaseController {
 		}
 		return "success";
 	}
+	/**
+	 * 
+	* @Title: exportEmployeeSalary 
+	* @Description: TODO(导出员工薪资情况) 
+	* @param @param request
+	* @param @param response
+	* @param @param employeeSalary
+	* @return void
+	* @throws 
+	* @author duanws
+	* @date 2016-7-21 下午5:02:30
+	 */
+	@RequestMapping({"employeeManage/employeeSalary/ope-query/exportEmployeeSalary"})
+	public void exportEmployeeSalary(HttpServletRequest request,HttpServletResponse response,EmployeeSalary employeeSalary){
+		
+	}
 	
 	/**
 	 * 

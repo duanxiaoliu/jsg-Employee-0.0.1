@@ -1,5 +1,7 @@
 package com.jsg.employee.service;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
 import com.jsg.base.model.BasePage;
 import com.jsg.base.service.IBaseService;
 import com.jsg.employee.model.EmployeeSalary;
@@ -115,4 +117,16 @@ public interface IEmployeeSalaryService extends IBaseService {
 	* @date 2016-7-19 下午1:30:48
 	 */
 	void delSalaryResultByIdDate(String employeeId,String salaryDate);
+	/**
+	 * 
+	* @Title: getWorkBook 
+	* @Description: TODO(获得导出信息) 
+	* @param @param employeeSalary
+	* @param @return
+	* @return HSSFWorkbook
+	* @throws 
+	* @author duanws
+	* @date 2016-7-21 下午5:12:10
+	 */
+	HSSFWorkbook getWorkBook(EmployeeSalary employeeSalary);
 }

@@ -3,6 +3,7 @@ package com.jsg.employee.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import com.jsg.base.util.DataUtil;
 import com.jsg.base.util.PageUtil;
 import com.jsg.employee.model.Customer;
 import com.jsg.employee.model.Employee;
+import com.jsg.employee.model.EmployeeSalary;
 import com.jsg.employee.service.ICustomerService;
 import com.jsg.employee.service.IEmployeeService;
 /**
@@ -183,8 +185,22 @@ public class EmployeeController extends BaseController {
 		this.setData(model, employee);
 		return "employee/employee/viewEmployee";
 	}
-	
-	
+	/**
+	 * 
+	* @Title: exportEmployeeSalaryMouth 
+	* @Description: TODO(导出某一月份的员工薪资信息) 
+	* @param @param request
+	* @param @param response
+	* @param @param employee
+	* @return void
+	* @throws 
+	* @author duanws
+	* @date 2016-7-21 下午5:11:43
+	 */
+	@RequestMapping({"employeeManage/employeeSalary/ope-query/exportEmployeeSalaryMouth"})
+	public void exportEmployeeSalaryMouth(HttpServletRequest request,HttpServletResponse response,Employee employee){
+		
+	}
 	/**
 	 * 
 	* @Title: setData 

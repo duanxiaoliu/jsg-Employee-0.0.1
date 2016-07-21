@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -948,6 +949,12 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 		public void delSalaryResultByIdDate(String employeeId, String salaryDate) {
 			this.employeeSalaryDao.delSalaryResultByIdDate(employeeId, salaryDate);
 			
+		}
+
+		@Override
+		public HSSFWorkbook getWorkBook(EmployeeSalary employeeSalary) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 		
 	//----------------------工资合算-------END---------------------------------------------------------------------

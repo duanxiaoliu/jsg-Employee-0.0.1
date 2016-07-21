@@ -2,6 +2,7 @@ package com.jsg.employee.service.impl;
 
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,6 +69,12 @@ public class EmployeeServiceImpl implements IEmployeeService {
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public HSSFWorkbook getWorkBook(Employee employee) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

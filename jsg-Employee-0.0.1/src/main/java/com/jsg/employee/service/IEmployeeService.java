@@ -1,11 +1,13 @@
 package com.jsg.employee.service;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jsg.base.model.BasePage;
 import com.jsg.base.service.IBaseService;
 import com.jsg.employee.dao.IEmployeeDao;
 import com.jsg.employee.model.Employee;
+import com.jsg.employee.model.EmployeeSalary;
 /**
  * 
 * @ClassName: IEmployeeService 
@@ -87,6 +89,16 @@ public interface IEmployeeService extends IBaseService {
 	* @date 2016-7-7 下午2:26:44
 	 */
 	boolean isExistEmployeeCode(String id,String employeeCode);
-	
-
+	/**
+	 * 
+	* @Title: getWorkBook 
+	* @Description: TODO(获得导出信息) 
+	* @param @param employee
+	* @param @return
+	* @return HSSFWorkbook
+	* @throws 
+	* @author duanws
+	* @date 2016-7-21 下午5:12:35
+	 */
+	HSSFWorkbook getWorkBook(Employee employee);
 }
