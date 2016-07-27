@@ -82,6 +82,19 @@ public interface IEmployeeSalaryService extends IBaseService {
 	EmployeeSalary getEmployeeSalaryBySalaryDate(String employeeId,String salaryDate);
 	/**
 	 * 
+	* @Title: checkEmployeeSalaryIsExist 
+	* @Description: TODO(通过薪资日期验证是否唯一) 
+	* @param @param id
+	* @param @param salaryDate
+	* @param @return
+	* @return boolean
+	* @throws 
+	* @author duanws
+	* @date 2016-7-27 下午3:36:31
+	 */
+	boolean checkEmployeeSalaryIsExist(String id,String salaryDate);
+	/**
+	 * 
 	* @Title: getSalaryResultBySalaryDate 
 	* @Description: TODO(通过薪资日期查询员工薪资结果) 
 	* @param @param employeeId

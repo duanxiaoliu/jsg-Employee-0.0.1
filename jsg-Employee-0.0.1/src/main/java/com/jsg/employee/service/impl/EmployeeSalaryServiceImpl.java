@@ -1,11 +1,13 @@
 package com.jsg.employee.service.impl;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -152,7 +154,7 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 			double reward = (this.employeeSalaryDao.getRwardByDate(employee.getId(), employeeSalary.getSalaryDate())!=null)?Double.parseDouble(this.employeeSalaryDao.getRwardByDate(employee.getId(), employeeSalary.getSalaryDate()).getRewardAmount()):0.00;
 			salaryResult.setReward(String.valueOf(reward));
 			//岗位津贴
-			String allowance = employeeSalary.getAllowance()!=null?employeeSalary.getAllowance():"0";
+			String allowance = employeeSalary.getAllowance()!=null&&employeeSalary.getAllowance()!=""?employeeSalary.getAllowance():"0";
 			salaryResult.setAllowance(allowance);
 			//上月调整
 			salaryResult.setAdjustment(employeeSalary.getAdjustment()!=null?employeeSalary.getAdjustment():"0");
@@ -167,7 +169,7 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 				//电脑补助
 				salaryResult.setComputerSupplement("0.00");
 				//工资及补偿总额
-				sumMoney =  baseSalary - this.getAbsenceMoney(employeeSalary, employee) + reward + allowance + employeeSalary.getAdjustment()!=null?Double.parseDouble(employeeSalary.getAdjustment()):0.00 + employeeSalary.getResignMoney()!=null?Double.parseDouble(employeeSalary.getResignMoney()):0.00 + promotion + this.getOverTimeMoney(employeeSalary, employee);
+				sumMoney =  baseSalary - this.getAbsenceMoney(employeeSalary, employee) + reward + Double.parseDouble(allowance) + employeeSalary.getAdjustment()!=null?Double.parseDouble(employeeSalary.getAdjustment()):0.00 + employeeSalary.getResignMoney()!=null?Double.parseDouble(employeeSalary.getResignMoney()):0.00 + promotion + this.getOverTimeMoney(employeeSalary, employee);
 				
 			}else{
 				//加班费及补助
@@ -176,8 +178,26 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 				salaryResult.setComputerSupplement(String.valueOf(this.getComputerSupplement(employeeSalary, employee,Callowance)));
 				//餐补
 				salaryResult.setMealSupplement(String.valueOf(this.getMealSupplement(employeeSalary, employee,Callowance)));
+				//上月调整
+				double adjustment = employeeSalary.getAdjustment()!=""?Double.parseDouble(employeeSalary.getAdjustment()):0.00;
+				//离职补贴金
+				double resignmoney = employeeSalary.getResignMoney()!=""?Double.parseDouble(employeeSalary.getResignMoney()):0.00;
+				//补助、月
+				double housing = Callowance.getHousing()!=""?Double.parseDouble(Callowance.getHousing()):0.00;
+				double otherMouth = Callowance.getOtherMouth()!=""?Double.parseDouble(Callowance.getOtherMouth()):0.00;
 				//工资及补偿总额
-				sumMoney =  baseSalary - this.getAbsenceMoney(employeeSalary, employee) + reward + allowance + this.getMealSupplement(employeeSalary, employee,Callowance) + this.getComputerSupplement(employeeSalary, employee,Callowance) + this.getTraffic(employeeSalary, employee, Callowance) + this.getOtherDay(employeeSalary, employee, Callowance) + Callowance.getHousing()!=null?Double.parseDouble(Callowance.getHousing()):0.00 + Callowance.getOtherMouth()!=null?Double.parseDouble(Callowance.getOtherMouth()):0.00 + employeeSalary.getAdjustment()!=null?Double.parseDouble(employeeSalary.getAdjustment()):0.00 + employeeSalary.getResignMoney()!=null?Double.parseDouble(employeeSalary.getResignMoney()):0.00 + promotion + this.getOverTimeMoney(employeeSalary, employee);
+				sumMoney =  baseSalary + 
+						reward + 
+						Double.parseDouble(allowance) + 
+						this.getMealSupplement(employeeSalary, employee,Callowance) + 
+						this.getComputerSupplement(employeeSalary, employee,Callowance) + 
+						this.getTraffic(employeeSalary, employee, Callowance) + 
+						this.getOtherDay(employeeSalary, employee, Callowance) + 
+						housing + otherMouth +
+						
+						promotion + adjustment + resignmoney+
+						this.getOverTimeMoney(employeeSalary, employee)- 
+						this.getAbsenceMoney(employeeSalary, employee);
 			}
 			salaryResult.setSum(String.valueOf(sumMoney));
 			//社保
@@ -235,7 +255,7 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 			salaryResult.setPunish((employeeSalary.getPunish()!=null)?employeeSalary.getPunish():"0");
 			//代扣款
 			salaryResult.setOther((employeeSalary.getOther()!=null)?employeeSalary.getOther():"0");
-			double debitMoney = socialSecurity + fundMoney + Double.parseDouble(salaryResult.getPunish()) + Double.parseDouble(salaryResult.getOther());
+			double debitMoney = socialSecurity + fundMoney + Double.parseDouble(salaryResult.getPunish()!=""?salaryResult.getPunish():"0.00") + Double.parseDouble(salaryResult.getOther()!=""?salaryResult.getOther():"0.00");
 			double totalSalary = sumMoney - debitMoney;
 			//个税
 			double tax = this.getTax(employeeSalary, employee, totalSalary);
@@ -786,8 +806,9 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 	        {  
 	            Taxrate=45;  
 	            Quickdeduction=13505;  
-	        }             
-	        return taxbase * Taxrate/100-Quickdeduction;  
+	        }
+	        DecimalFormat df = new DecimalFormat("#.00");
+	        return Double.parseDouble(df.format(taxbase * Taxrate/100-Quickdeduction));  
 
 		}
 		/**
@@ -938,6 +959,8 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 			return (sickMoney + personalMoney);
 		}
 
+		
+	//----------------------工资合算-------END---------------------------------------------------------------------
 		@Override
 		public void delEmployeeSalaryByIdDate(String employeeId,
 				String salaryDate) {
@@ -953,10 +976,29 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 
 		@Override
 		public HSSFWorkbook getWorkBook(EmployeeSalary employeeSalary) {
-			// TODO Auto-generated method stub
+			String salaryDate = employeeSalary.getSalaryDate();
+			//声明一个工作薄
+			HSSFWorkbook workbook = new HSSFWorkbook();
+			//生成一个表格
+			HSSFSheet sheet = workbook.createSheet(salaryDate+"员工薪资信息");
+			
 			return null;
 		}
-		
-	//----------------------工资合算-------END---------------------------------------------------------------------
+
+		@Override
+		public boolean checkEmployeeSalaryIsExist(String id, String salaryDate) {
+			String hql = " from EmployeeSalary e where e.salaryDate='"+salaryDate+"'";
+			List<EmployeeSalary> list = this.employeeSalaryDao.queryList(hql, new Object[0]);
+			if((list != null) && (list.size()>0)){
+				if(list.size()==1){
+					if(!list.get(0).getId().equals(id)){
+						return false;
+					}
+				}else if(list.size() > 1){
+					return false;
+				}
+			}
+			return true;
+		}
 	
 }

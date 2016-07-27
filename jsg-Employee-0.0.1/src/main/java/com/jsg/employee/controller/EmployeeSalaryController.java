@@ -115,6 +115,25 @@ public class EmployeeSalaryController extends BaseController {
 	}
 	/**
 	 * 
+	* @Title: checkEmployeeSalaryIsExist 
+	* @Description: TODO(通过员工薪资日期判断是否唯一) 
+	* @param @return
+	* @return String
+	* @throws 
+	* @author duanws
+	* @date 2016-7-27 下午3:20:02
+	 */
+	@RequestMapping(value={"salary/employeeSalary/check/checkEmployeeSalaryIsExist"},produces={"text/plain"})
+	public @ResponseBody String checkEmployeeSalaryIsExist(HttpServletRequest request){
+		String id = request.getParameter("id");
+		String salaryDate = request.getParameter("salaryDate");
+		if(this.employeeSalaryService.checkEmployeeSalaryIsExist(id, salaryDate)){
+			return "true";
+		}
+		return "false";
+	}
+	/**
+	 * 
 	* @Title: computeSalary 
 	* @Description: TODO(计算员工薪资) 
 	* @param @param request
@@ -214,10 +233,10 @@ public class EmployeeSalaryController extends BaseController {
 	* @date 2016-7-12 下午3:43:30
 	 */
 	private void setData(ModelMap model,EmployeeSalary employeeSalary,SalaryResult salaryResult){
-		List<BaseDic> YNDicList = this.dicService.getDicListByCode("Y_N");
+		List<BaseDic> YNListDic = this.dicService.getDicListByCode("Y_N");
 		
 		//是否
-		model.addAttribute("YNDicList", YNDicList);
+		model.addAttribute("YNListDic", YNListDic);
 		model.addAttribute("employeeSalary", employeeSalary);
 		model.addAttribute("salaryResult", salaryResult);
 	}
