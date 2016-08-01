@@ -103,6 +103,21 @@ public class EmployeeSalaryDaoImpl extends BaseDaoImpl implements
 		this.executeHql(hql, new Object[0]);
 		
 	}
+
+	@Override
+	public List<SalaryResult> querySalaryResultList(
+			EmployeeSalary employeeSalary) {
+		StringBuffer hql = new StringBuffer(" from EmployeeSalary e where 1=1");
+		//员工id
+		if(DataUtil.strIsNotNull(employeeSalary.getEmployee().getId())){
+			hql.append(" and e.employee.id='"+employeeSalary.getEmployee().getId()+"'");
+		}
+		//薪资年月
+		if(DataUtil.strIsNotNull(employeeSalary.getSalaryDate())){
+			hql.append(" and e.salaryDate='"+employeeSalary.getSalaryDate()+"'");
+		}
+		return this.queryList(hql.toString(), new Object[0]);
+	}
 	
 	
 	

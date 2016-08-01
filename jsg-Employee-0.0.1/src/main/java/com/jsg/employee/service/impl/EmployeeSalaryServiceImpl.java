@@ -1,14 +1,31 @@
 package com.jsg.employee.service.impl;
 
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +41,7 @@ import com.jsg.employee.model.EmployeeSalary;
 import com.jsg.employee.model.SalaryResult;
 import com.jsg.employee.service.IEmployeeSalaryService;
 import com.jsg.employee.util.SalaryUtils;
+import com.mysql.fabric.xmlrpc.base.Array;
 /**
  * 
 * @ClassName: EmployeeSalaryServiceImpl 
@@ -974,16 +992,6 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 			
 		}
 
-		@Override
-		public HSSFWorkbook getWorkBook(EmployeeSalary employeeSalary) {
-			String salaryDate = employeeSalary.getSalaryDate();
-			//声明一个工作薄
-			HSSFWorkbook workbook = new HSSFWorkbook();
-			//生成一个表格
-			HSSFSheet sheet = workbook.createSheet(salaryDate+"员工薪资信息");
-			
-			return null;
-		}
 
 		@Override
 		public boolean checkEmployeeSalaryIsExist(String id, String salaryDate) {
@@ -999,6 +1007,151 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 				}
 			}
 			return true;
+		}
+
+		@Override
+		public void exportEmployeeSalary(EmployeeSalary employeeSalary,HttpServletResponse response) {
+			String salaryDate = employeeSalary.getSalaryDate();
+			String sheetName = salaryDate+"员工薪资信息";
+			
+			//声明一个工作薄
+			HSSFWorkbook workbook = new HSSFWorkbook();
+			//生成一个表格
+			HSSFSheet sheet = workbook.createSheet(sheetName);
+			sheet.setColumnWidth(0, 8*256);
+			sheet.setColumnWidth(1, 15*256);
+			sheet.setColumnWidth(2, 8*256);
+			sheet.setColumnWidth(3, 15*256);
+			sheet.setColumnWidth(4, 15*256);
+			sheet.setColumnWidth(5, 15*256);
+			sheet.setColumnWidth(6, 20*256);
+			//生成一个样式
+			HSSFCellStyle styleHeader = workbook.createCellStyle();
+			styleHeader.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+			styleHeader.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			styleHeader.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+			styleHeader.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			styleHeader.setBorderRight(HSSFCellStyle.BORDER_THIN);
+			styleHeader.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			//生成一个字体
+			HSSFFont fontHeader = workbook.createFont();
+			fontHeader.setFontName("宋体");
+			fontHeader.setFontHeightInPoints((short)10);
+			fontHeader.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+			styleHeader.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+			styleHeader.setFillPattern(CellStyle.SOLID_FOREGROUND);
+			styleHeader.setFont(fontHeader);
+			//生成并设置另一个样式
+			HSSFCellStyle style1 = workbook.createCellStyle();
+			style1.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+			style1.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			style1.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+			style1.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			style1.setBorderRight(HSSFCellStyle.BORDER_THIN);
+			style1.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			HSSFFont font1 = workbook.createFont();
+			font1.setFontName("宋体");
+			font1.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+			font1.setFontHeightInPoints((short)10);
+			style1.setFont(font1);
+			//生成并设置另一个样式
+			HSSFCellStyle style2 = workbook.createCellStyle();
+			style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+			style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+			style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			style2.setBorderRight(HSSFCellStyle.BORDER_THIN);
+			style2.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			HSSFFont font2 = workbook.createFont();
+			font2.setFontName("宋体");
+			font2.setFontHeightInPoints((short)10);
+			style2.setFont(font2);
+			
+			HSSFRow rowsClass = sheet.createRow(0);
+			HSSFCell cell = rowsClass.createCell(0);
+			cell.setCellValue(sheetName);
+			cell.setCellStyle(style1);
+			rowsClass.setHeight((short)500);//行高
+			//合并单元格
+			sheet.addMergedRegion(new CellRangeAddress(0,(short)0,0,(short)(10)));
+			//产生表格标题行
+			HSSFRow row = sheet.createRow(1);
+			row.setHeightInPoints(20);
+			//表头名称
+			String [] headers = {"日期","姓名","员工编号","缺勤扣款","出勤工资","工资及补贴总额","代扣款","实发工资"};
+			List<String> headerList = new ArrayList<String>();
+			Collections.addAll(headerList, headers);//将数组转换成列表
+			//List<String> headerList1 = new ArrayList<String>(Arrays.asList(headers));   数据转列表方法2
+			//添加标题
+			for(short i = 0;i < headerList.size();i++){
+				HSSFCell cell1 = row.createCell(i);
+				cell1.setCellStyle(styleHeader);
+				HSSFRichTextString text = new HSSFRichTextString(headerList.get(i));
+				cell1.setCellValue(text);
+			}
+			//行序号
+			int index1 = 0;
+			List<SalaryResult> salaryResultList = this.employeeSalaryDao.querySalaryResultList(employeeSalary);
+			for(SalaryResult sr:salaryResultList){
+				index1++;
+				row = sheet.createRow(index1);
+				Map<String,String> salaryMap = this.getValueMap(sr, headerList);
+				//列序号
+				short j = 0;
+				for(String key:headerList){
+					//赋值
+					HSSFCell cellNew = row.createCell(j);
+					cellNew.setCellStyle(style2);
+					cellNew.setCellValue(salaryMap.get(key));
+					j++;
+				}
+				
+				
+			}
+			try{
+				String fileName = "员工薪资表.xls";
+				response.setContentType("application/x-excel");
+				response.setHeader("Content-disposition", "attachment;filename="+new String(fileName.getBytes("GBK"),"iso-8859-1"));
+				response.setCharacterEncoding("UTF-8");
+				OutputStream os = response.getOutputStream();
+				workbook.write(os);
+				os.flush();
+				os.close();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		/**
+		 * 
+		* @Title: getValueMap 
+		* @Description: TODO(拼接导出信息) 
+		* @param @param sr
+		* @param @param headerList
+		* @param @return
+		* @return Map<String,String>
+		* @throws 
+		* @author duanws
+		* @date 2016-8-1 下午1:39:07
+		 */
+		private Map<String,String> getValueMap(SalaryResult sr,List headerList){
+			Map salaryMap = new HashMap<String,String>();
+			//日期
+			salaryMap.put(headerList.get(0), sr.getSalaryDate());
+			//员工姓名
+			salaryMap.put(headerList.get(1), sr.getEmployee().getEmployeeName());
+			//员工编号
+			salaryMap.put(headerList.get(2), sr.getEmployee().getEmployeeCode());
+			//缺勤扣款
+			salaryMap.put(headerList.get(3),sr.getAbsenceMoney());
+			//出勤工资
+			salaryMap.put(headerList.get(4), sr.getAttendanceMoney());
+			//工资及补贴总额
+			salaryMap.put(headerList.get(5), sr.getSum());
+			//代扣款
+			salaryMap.put(headerList.get(6), sr.getOther());
+			//实发工资
+			salaryMap.put(headerList.get(7), sr.getFinnalMoney());
+			return salaryMap;
 		}
 	
 }

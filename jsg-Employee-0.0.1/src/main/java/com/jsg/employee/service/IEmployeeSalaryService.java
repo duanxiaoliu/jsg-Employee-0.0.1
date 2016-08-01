@@ -1,5 +1,7 @@
 package com.jsg.employee.service;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import com.jsg.base.model.BasePage;
@@ -132,14 +134,13 @@ public interface IEmployeeSalaryService extends IBaseService {
 	void delSalaryResultByIdDate(String employeeId,String salaryDate);
 	/**
 	 * 
-	* @Title: getWorkBook 
-	* @Description: TODO(获得导出信息) 
+	* @Title: exportEmployeeSalary 
+	* @Description: TODO(导出员工薪资信息) 
 	* @param @param employeeSalary
-	* @param @return
-	* @return HSSFWorkbook
+	* @return void
 	* @throws 
 	* @author duanws
-	* @date 2016-7-21 下午5:12:10
+	* @date 2016-7-29 下午4:11:10
 	 */
-	HSSFWorkbook getWorkBook(EmployeeSalary employeeSalary);
+	void exportEmployeeSalary(EmployeeSalary employeeSalary,HttpServletResponse response);
 }

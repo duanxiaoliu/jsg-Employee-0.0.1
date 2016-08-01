@@ -217,7 +217,7 @@ public class EmployeeSalaryController extends BaseController {
 	 */
 	@RequestMapping({"employeeManage/employeeSalary/ope-query/exportEmployeeSalary"})
 	public void exportEmployeeSalary(HttpServletRequest request,HttpServletResponse response,EmployeeSalary employeeSalary){
-		
+		this.employeeSalaryService.exportEmployeeSalary(employeeSalary, response);
 	}
 	
 	/**

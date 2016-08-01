@@ -31,6 +31,18 @@ public interface IEmployeeSalaryDao extends IBaseDao {
 	BasePage queryEmployeeSalary(int pageNo,int pageSize,EmployeeSalary employeeSalary);
 	/**
 	 * 
+	* @Title: querySalaryResultList 
+	* @Description: TODO(获得员工薪资导出信息列表) 
+	* @param @param employeeSalary
+	* @param @return
+	* @return List<SalaryResult>
+	* @throws 
+	* @author duanws
+	* @date 2016-8-1 下午1:31:55
+	 */
+	List<SalaryResult> querySalaryResultList(EmployeeSalary employeeSalary);
+	/**
+	 * 
 	* @Title: delEmployeeSalaryById 
 	* @Description: TODO(通过id删除员工薪资信息) 
 	* @param @param id
