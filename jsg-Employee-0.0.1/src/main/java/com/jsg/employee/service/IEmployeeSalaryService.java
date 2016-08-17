@@ -143,4 +143,16 @@ public interface IEmployeeSalaryService extends IBaseService {
 	* @date 2016-7-29 下午4:11:10
 	 */
 	void exportEmployeeSalary(EmployeeSalary employeeSalary,HttpServletResponse response);
+	/**
+	 * 
+	* @Title: exportEmployeeSalaryMouth 
+	* @Description: TODO(按月导出所有员工工资) 
+	* @param @param salaryResult
+	* @param @param response
+	* @return void
+	* @throws 
+	* @author duanws
+	* @date 2016-8-4 下午3:39:43
+	 */
+	void exportEmployeeSalaryMouth(SalaryResult salaryResult,HttpServletResponse response);
 }

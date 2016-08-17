@@ -1013,7 +1013,22 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 		public void exportEmployeeSalary(EmployeeSalary employeeSalary,HttpServletResponse response) {
 			String salaryDate = employeeSalary.getSalaryDate();
 			String sheetName = salaryDate+"员工薪资信息";
-			
+			//员工工资信息
+			List<SalaryResult> salaryResultList = this.employeeSalaryDao.querySalaryResultList(employeeSalary);
+			this.exportExcel(salaryResultList, sheetName, response);
+		}
+		/**
+		 * 
+		* @Title: exportExcel 
+		* @Description: TODO(导出信息) 
+		* @param @param salaryResultList
+		* @return void
+		* @throws 
+		* @author duanws
+		* @date 2016-8-4 下午3:41:47
+		 */
+		private void exportExcel(List<SalaryResult> salaryResultList,String sheetName,HttpServletResponse response){
+
 			//声明一个工作薄
 			HSSFWorkbook workbook = new HSSFWorkbook();
 			//生成一个表格
@@ -1073,7 +1088,7 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 			cell.setCellStyle(style1);
 			rowsClass.setHeight((short)500);//行高
 			//合并单元格
-			sheet.addMergedRegion(new CellRangeAddress(0,(short)0,0,(short)(10)));
+			sheet.addMergedRegion(new CellRangeAddress(0,(short)0,0,(short)(7)));
 			//产生表格标题行
 			HSSFRow row = sheet.createRow(1);
 			row.setHeightInPoints(20);
@@ -1090,26 +1105,28 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 				cell1.setCellValue(text);
 			}
 			//行序号
-			int index1 = 0;
-			List<SalaryResult> salaryResultList = this.employeeSalaryDao.querySalaryResultList(employeeSalary);
-			for(SalaryResult sr:salaryResultList){
-				index1++;
-				row = sheet.createRow(index1);
-				Map<String,String> salaryMap = this.getValueMap(sr, headerList);
-				//列序号
-				short j = 0;
-				for(String key:headerList){
-					//赋值
-					HSSFCell cellNew = row.createCell(j);
-					cellNew.setCellStyle(style2);
-					cellNew.setCellValue(salaryMap.get(key));
-					j++;
+			int index1 = 1;
+			if(salaryResultList.size()>0){
+				for(SalaryResult sr:salaryResultList){
+					index1++;
+					row = sheet.createRow(index1);
+					Map<String,String> salaryMap = this.getValueMap(sr, headerList);
+					//列序号
+					short j = 0;
+					for(String key:headerList){
+						//赋值
+						HSSFCell cellNew = row.createCell(j);
+						cellNew.setCellStyle(style2);
+						cellNew.setCellValue(salaryMap.get(key));
+						j++;
+					}
+					
+					
 				}
-				
-				
+			
 			}
 			try{
-				String fileName = "员工薪资表.xls";
+				String fileName = sheetName+".xls";
 				response.setContentType("application/x-excel");
 				response.setHeader("Content-disposition", "attachment;filename="+new String(fileName.getBytes("GBK"),"iso-8859-1"));
 				response.setCharacterEncoding("UTF-8");
@@ -1151,7 +1168,17 @@ public class EmployeeSalaryServiceImpl implements IEmployeeSalaryService {
 			salaryMap.put(headerList.get(6), sr.getOther());
 			//实发工资
 			salaryMap.put(headerList.get(7), sr.getFinnalMoney());
+			
 			return salaryMap;
+		}
+
+		@Override
+		public void exportEmployeeSalaryMouth(SalaryResult salaryResult,
+				HttpServletResponse response) {
+			String sheetName = "员工工资";
+			List<SalaryResult> salaryResultList = this.employeeSalaryDao.getSalaryMouth(salaryResult);
+			this.exportExcel(salaryResultList, sheetName, response);
+			
 		}
 	
 }

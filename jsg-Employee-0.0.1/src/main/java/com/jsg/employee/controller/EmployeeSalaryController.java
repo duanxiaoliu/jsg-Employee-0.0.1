@@ -219,7 +219,26 @@ public class EmployeeSalaryController extends BaseController {
 	public void exportEmployeeSalary(HttpServletRequest request,HttpServletResponse response,EmployeeSalary employeeSalary){
 		this.employeeSalaryService.exportEmployeeSalary(employeeSalary, response);
 	}
-	
+	/**
+	 * 
+	* @Title: exportEmployeeSalaryMouth 
+	* @Description: TODO(按月份导出所有员工工资) 
+	* @param @param request
+	* @param @param response
+	* @param @param employee
+	* @return void
+	* @throws 
+	* @author duanws
+	* @date 2016-8-4 下午3:36:02
+	 */
+	@RequestMapping({"employeeManage/employeeSalary/ope-query/exportEmployeeSalaryMouth"})
+	public void exportEmployeeSalaryMouth(HttpServletRequest request,HttpServletResponse response,Employee employee){
+		SalaryResult salaryResult = new SalaryResult();
+		String salaryDate = request.getParameter("salaryDate");
+		salaryResult.setEmployee(employee);
+		salaryResult.setSalaryDate(salaryDate);
+		this.employeeSalaryService.exportEmployeeSalaryMouth(salaryResult, response);
+	}
 	/**
 	 * 
 	* @Title: setData 

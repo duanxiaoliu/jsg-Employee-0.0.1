@@ -156,4 +156,16 @@ public interface IEmployeeSalaryDao extends IBaseDao {
 	* @date 2016-7-19 下午1:24:19
 	 */
 	void delSalaryResultByIdDate(String employeeId,String salaryDate);
+	/**
+	 * 
+	* @Title: getSalaryMouth 
+	* @Description: TODO(按月份获得所有员工工资) 
+	* @param @param salaryResult
+	* @param @return
+	* @return List<SalaryResult>
+	* @throws 
+	* @author duanws
+	* @date 2016-8-4 下午3:46:20
+	 */
+	List<SalaryResult> getSalaryMouth(SalaryResult salaryResult);
 }

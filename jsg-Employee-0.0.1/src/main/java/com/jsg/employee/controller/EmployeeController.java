@@ -185,22 +185,7 @@ public class EmployeeController extends BaseController {
 		this.setData(model, employee);
 		return "employee/employee/viewEmployee";
 	}
-	/**
-	 * 
-	* @Title: exportEmployeeSalaryMouth 
-	* @Description: TODO(导出某一月份的员工薪资信息) 
-	* @param @param request
-	* @param @param response
-	* @param @param employee
-	* @return void
-	* @throws 
-	* @author duanws
-	* @date 2016-7-21 下午5:11:43
-	 */
-	@RequestMapping({"employeeManage/employeeSalary/ope-query/exportEmployeeSalaryMouth"})
-	public void exportEmployeeSalaryMouth(HttpServletRequest request,HttpServletResponse response,Employee employee){
-		
-	}
+
 	/**
 	 * 
 	* @Title: setData 

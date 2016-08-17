@@ -107,7 +107,7 @@ public class EmployeeSalaryDaoImpl extends BaseDaoImpl implements
 	@Override
 	public List<SalaryResult> querySalaryResultList(
 			EmployeeSalary employeeSalary) {
-		StringBuffer hql = new StringBuffer(" from EmployeeSalary e where 1=1");
+		StringBuffer hql = new StringBuffer(" from SalaryResult e where 1=1");
 		//员工id
 		if(DataUtil.strIsNotNull(employeeSalary.getEmployee().getId())){
 			hql.append(" and e.employee.id='"+employeeSalary.getEmployee().getId()+"'");
@@ -115,6 +115,32 @@ public class EmployeeSalaryDaoImpl extends BaseDaoImpl implements
 		//薪资年月
 		if(DataUtil.strIsNotNull(employeeSalary.getSalaryDate())){
 			hql.append(" and e.salaryDate='"+employeeSalary.getSalaryDate()+"'");
+		}
+		return this.queryList(hql.toString(), new Object[0]);
+	}
+
+	@Override
+	public List<SalaryResult> getSalaryMouth(SalaryResult salaryResult) {
+		StringBuffer hql = new StringBuffer(" from SalaryResult e where 1=1");
+		//员工姓名
+		if(DataUtil.strIsNotNull(salaryResult.getEmployee().getEmployeeName())){
+			hql.append(" and e.employee.employeeName like '%"+salaryResult.getEmployee().getEmployeeName()+"%'");
+		}
+		//员工代码
+		if(DataUtil.strIsNotNull(salaryResult.getEmployee().getEmployeeCode())){
+			hql.append(" and e.employee.employeeCode like '%"+salaryResult.getEmployee().getEmployeeCode()+"%'");
+		}
+		//所在部门
+		if(DataUtil.objIsNotNull(salaryResult.getEmployee().getDepartment()) && DataUtil.objIsNotNull(salaryResult.getEmployee().getDepartment().getId()) ){
+			hql.append(" and e.employee.department.id = '"+salaryResult.getEmployee().getDepartment().getId()+"'");
+		}
+		//所在客户
+		if(DataUtil.objIsNotNull(salaryResult.getEmployee().getCustomer()) && DataUtil.objIsNotNull(salaryResult.getEmployee().getCustomer().getId()) ){
+			hql.append(" and e.employee.customer.id = '"+salaryResult.getEmployee().getCustomer().getId()+"'");
+		}
+		//薪资年月
+		if(DataUtil.strIsNotNull(salaryResult.getSalaryDate())){
+			hql.append(" and e.salaryDate='"+salaryResult.getSalaryDate()+"'");
 		}
 		return this.queryList(hql.toString(), new Object[0]);
 	}

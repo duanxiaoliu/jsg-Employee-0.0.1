@@ -106,7 +106,7 @@ public class EmployeeSalary extends BaseModel implements Serializable{
 		return salaryDate;
 	}
 	public void setSalaryDate(String salaryDate) {
-		this.salaryDate = salaryDate;
+		this.salaryDate = salaryDate.replace("[object HTMLInputElement],", "");
 	}
 	public String getQsalaryDate() {
 		return QsalaryDate;
